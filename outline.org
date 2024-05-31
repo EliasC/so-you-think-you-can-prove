@@ -1,0 +1,39 @@
+* Saker vi vill att de ska kunna
+- Föra ett matematiskt resonemang
+- Bevis i praktiken
+- "recept"
+- Vanliga saker i bevis
+  - Kvantifierare
+    - "anta att vi har ett 'x'"
+    - Hitta vittnen för existens
+  - Implikationer
+    - Antaganden
+    - "Vacuously true"
+    - Cirkelresonemang (anti-pattern)
+  - Formalisera ett matematiskt påstående
+    - Gå från engelska till matematik
+  - Motsägelsebevis
+    - Lagen om det uteslutna tredje: om motsatsen till P är falsk är P sann
+  - (Strukturell) induktion
+    - Börja med heltalsinduktion --> Peano
+    - Vilken ordning i relation till implikation (hitta motexempel)
+    - Varför funkar det? (överkurs)
+      - Kolla TAPLs förklaring
+    - Vad är det induktion över? (anti-pattern)
+* Exempel
+- Saker om listor?
+- Finn fem fel i bevis
+* Struktur
+- Motivering av dokumentet
+  - Målet är matematiska resonemang, vägen är formalisering
+  - Bevis i praktiken
+- Formalisera matematiska påståenden
+  - Uppställning
+  - Exempel
+- Koncept (varje koncept har exempel)
+  - Implikationer och antaganden
+  - Kvantifierare
+  - (Strukturell) induktion
+  - Motsägelsebevis
+- Övningar
+- Överkurs om induktion

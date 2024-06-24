@@ -1,7 +1,328 @@
-\documentclass{article}
+\documentclass{tufte-handout}
 
 \usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcounter{example}
+\newenvironment{example}
+{\refstepcounter{example}\begin{quote}
+\textbf{Example \arabic{example}}}
+{
+
+$\square$\end{quote}}
+
+\newenvironment{exercise}
+{\refstepcounter{example}\begin{quote}
+\textbf{Exercise \arabic{example}}}
+{\end{quote}}
+
+\newcommand{\RED}[1]{\textcolor{red}{#1}}
+\newcommand{\TODO}[1]{\RED{TODO: #1}}
+
+\title[So You Think You Can Prove?]{So You Think You Can Prove?\\
+{\large A Practical Tutorial in Writing Formal Proofs}}
+
+\author{Elias Castegren, Ellen Arvidsson}
+
+\synctex=1
 
 \begin{document}
-Hello, world!
+\maketitle
+
+\marginnote{This document was developed for the course Semantics
+  of Programming Languages at Uppsala University. Please send any
+  feedback to \texttt{elias.castegren@it.uu.se}. }
+
+\section{Motivation}
+
+The purpose of this document is to teach you about mathematical
+reasoning; in particular how to write \emph{formal proofs}. A
+formal proof is a sequence of steps that transforms one
+configuration of symbols into another configuration of symbols
+(i.e. the thing you want to prove)\footnote{For example, the
+  starting configuration might be $1 + (2 + 3)$, and the steps
+  might be $1 + (2 + 3) = 1 + 5 = 6$}. Writing formal proofs isn't
+always necessary to convince anyone of your point, but in order to
+learn how to conduct mathematical reasoning it is important to
+know the underlying formal techniques.
+
+This document should not be seen as a beginner's text book in
+logic or even formal proofs -- the text assumes that you have a
+basic understanding of both logic and proofs. The first goal of
+this document is to have you brush up on this understanding and
+remind you about concepts and terminology. A large part of formal
+proofs is quite mechanical, but learning how to operate the
+machinery requires practice. The second goal is therefore to
+provide you with a set of practical tools that you can use when
+doing your own formal proofs.
+
+The rest of this tutorial has three sections.
+%
+The first section covers how to formalise informal statements,
+that is, how to translate natural language into the symbols that
+your proofs will be dealing with.
+%
+The following section covers techniques for formal proofs, sorted
+by the kinds of formal constructs you might come across and how to
+handle them.
+%
+Finally, the last section motivates the concept of structural
+induction. This section should be seen as bonus content for the
+interested reader.
+%
+Each section comes with a couple of exercises. Suggested solutions
+are provided at the end of this document.
+
+\section{Formalising Mathematical Statements}
+
+% - Formalisera matematiska påståenden
+%   - Uppställning
+%   - Exempel
+
+Before you can even start to prove anything formally, you need to
+know how to \emph{state} what it is you want to prove in a formal
+way. Since formal proofs is all about careful manipulation of
+symbols, you first need to be able to write the initial symbols
+down so that you can start manipulating them. Sometimes an
+exercise or assignment will give you a formal statement to begin
+with, but most times you will not be so lucky.
+
+When dealing with proofs, we typically call a statement that can
+be true or false (but not both) a \emph{proposition}\footnote{In
+  general we will use ``derivable'' instead of ``true'', since we
+  might be looking at what we can derive with a given set of rules
+  rather than be concerned with the concept of truth. }. Here are
+three examples of propositions:
+\begin{itemize}
+\item ``Three is smaller than two''
+\item ``There is at least one natural number between five
+and ten''
+\item ``Bananas are yellow''
+\end{itemize}
+
+\noindent
+Note that even though the first example is clearly not true, it is
+still a proposition!
+%
+In order to write the third statement down formally, we need a way
+to write down the concepts of ``something being a banana'' and
+``something beng yellow''. These are examples of
+\emph{predicates}. Predicates can be thought of as functions whose
+result is a proposition; we can write $\mathit{banana}(x)$ or
+$\mathit{yellow}(x)$ for the propositions that $x$ (whatever it
+is) is a banana or yellow respectively. Note that
+$\mathit{yellow}$ is a predicate, while $\mathit{yellow}(x)$ is a
+proposition.
+
+\marginnote{\textbf{Glossary}\\
+\begin{itemize}
+\item A \emph{proposition} is a statement that is either true or false.
+\item A \emph{predicate} is a function whose result is a proposition.
+\item A \emph{relation} is a predicate which takes two or more arguments.
+\end{itemize}
+}
+
+With these predicates, we can write the propositions formally as
+follows:
+
+\begin{itemize}
+\item $3 < 2$
+\item $\exists n : \mathbb{N} .~ 5 < n ~\land~ n < 10$
+\item $\forall b. \mathit{banana}(b) \implies \mathit{yellow}(b)$
+\end{itemize}
+
+\noindent
+Note that have not formally \emph{defined} how to identify a
+banana or that an object is yellow. That may or may not be
+important for what you want to do with these predicates, but the
+important step for now is that there is a \emph{symbolic
+  representation} of these properties.
+
+Note also that we used (for example) the symbol $<$ without
+introducing it. This is because it already has a meaning that one
+can be expected to understand. Indeed, the symbol $<$ is also a
+predicate, but one that takes two arguments (note how $3 < 2$ is a
+proposition). A predicate that takes two or more arguments is
+often called a \emph{relation}.
+
+\begin{example}\label{busdriver}
+  There is a Swedish children's song (to the tune of ``Oh
+  Tannenbaum'') called ``En busschauff\"{o}r'' whose lyrics let us
+  know that ``A bus driver is a man with a jolly
+  mood''\footnote{Swedish children learn the logical concept of
+    the \emph{contrapositive} from an early age. The song
+    continues to state that ``if he does not have a jolly mood,
+    then he is no bus driver'':
+    $\forall p. \lnot \mathit{jolly}(p) \implies \lnot
+    \mathit{busDriver}(p)$}. In order to formalise this
+  proposition, we start by defining three predicates:
+  \begin{itemize}
+  \item $\mathit{busDriver}~p$ -- the person $p$ is a bus driver
+  \item $\mathit{male}~p$ -- the person $p$ identifies as male
+  \item $\mathit{jolly}~p$ -- the person $p$ has a jolly mood
+  \end{itemize}
+  The proposition of the song can now be formalised as ``for any
+  person $p$, if $p$ is a bus driver, then $p$ is male and $p$ has
+  a jolly mood'':
+  \[
+    \forall p.
+    \mathit{busDriver}~p \implies
+    \mathit{male}~p ~\land~
+    \mathit{jolly}~p
+  \]
+  Again, we can learn from this example is that it is perfectly
+  possible to formalise propositions which are not true; most of
+  us will have met bus drivers who do not identify as male or who
+  we would not classify as jolly.
+\end{example}
+
+One of the points of translating an informal statement to a formal
+one is to get rid of the ambiguity that is prevalent in natural
+language. For example, when we say that ``Bananas are yellow'', do
+we mean that \emph{all} bananas are yellow or that \emph{there
+  are} bananas which are yellow\footnote{This distinction turns
+  out to be important: only the latter interpretation is true
+  since there are bananas which are red!}. When formalising the
+proposition, we get rid of this ambiguity:
+
+\begin{itemize}
+\item ``All bananas are yellow'' -- $\forall b. \mathit{banana}(b) \implies \mathit{yellow}(b)$
+\item ``Some bananas are yellow'' -- $\exists b. \mathit{banana}(b) \land \mathit{yellow}(b)$
+\end{itemize}
+
+\noindent
+The ambiguity of natural languages also shows up in how we use
+conjunctions like ``or'' when we speak. If you asking someone if
+they would like tea or coffee, you are implicitly expecting them
+to pick one of them, and not both\footnote{While it is logically
+  correct to answer ``yes'' to the question ``Would you like tea
+  or coffee'', it is also quite obnoxious. Don't be that person.
+}. In logic there is a distinction between ``inclusive or'' and
+``exclusive or'', each with their own (clearly defined) semantics.
+
+We will end this section with an example that is more connected to
+computer science than the colour of bananas and the mood of bus
+drivers.
+
+\begin{example}
+  A list is either empty or consists of one element followed by
+  the rest of the list. A list can be \emph{filtered} given some
+  predicate $P$, such that elements that do not satisfy $P$ are
+  discarded. One important property of filtering is that if an
+  element for which $P$ holds is in a list, this element will also
+  be in the list if it is filtered with $P$\footnote{This is a
+    property we want, but it is not enough. Try to think about a
+    definition of filtering that is wrong but which still
+    satisfies this property. }.
+
+  If we assume the existence of a $\mathit{filter}$ operation and
+  a relation $\mathit{member}$ that holds if a given integer is in
+  a given list, we can formalise the main property as a
+  proposition:
+  \[
+    \forall x, l.~P(x) ~\land~ \mathit{member}(x, l)
+    \implies
+    \mathit{member}(x, \mathit{filter}(l, P))
+  \]
+  We will go ahead and formalise this with enough details so that
+  we can actually prove that what we have said holds (although
+  \RED{the proof will be given in a later section}).
+
+  We start by defining the grammar of lists of integers:
+
+  $\mathit{list} ::= \epsilon ~|~ n; \mathit{list}$
+
+  \noindent
+  We then continue to define the operation $\mathit{filter}$ which
+  produces a filtered list given some predicate $P$:
+
+  $\mathit{filter(l, P)} =
+  \begin{cases}
+    \epsilon & \text{if } l = \epsilon\\
+    n; \mathit{filter}(l', P) & \text{if } l = n; l' \text{ and } P(n) \text{ holds}\\
+    \mathit{filter}(l', P) & \text{if } l = n; l' \text{ and } P(n) \text{ does not hold}\\
+  \end{cases}$
+
+  \noindent
+  Finally, we define the derivation rules for when an element is a
+  member of a list; it is either the first element of the list, or
+  it is a member of the rest of the list:
+
+  \[
+    \frac{}{~\mathit{member}(x, x; \mathit{list})~}
+    \qquad
+    \frac{~\mathit{member}(x, \mathit{list})~}{~\mathit{member}(x, y; \mathit{list})~}
+  \]
+
+\end{example}
+
+\subsection{Exercises}
+
+\begin{enumerate}
+\item\label{freshclean} The Outkast song ``So Fresh, So Clean''
+  from the 2000 album Stankonia starts with the statement ``Ain't
+  nobody dope as me, I'm just so fresh, so clean''. Formalise this
+  statement, assuming this can be generalised so that any person
+  who is both fresh and clean is more dope than anyone
+  else\footnote{You can ignore the fact that this introduces a
+    contradiction if there are two people who are both fresh and
+    clean}. Start by introducing any predicates you might need.
+  % ∀p. fresh(p) ∧ clean(p) => ∀q. dopeness q < dopeness p
+\item The offside rule in soccer states that a player is in
+  ``offside position'' if they are
+  \begin{enumerate}
+  \item in the opponents' half of the pitch;
+  \item closer to the opponents' goal than the ball is; and
+  \item closer to the opponents' goal than the second-closest
+    opponent (the opponent closest to the goal is typically the
+    goal keeper)
+  \end{enumerate}
+
+  Define the proposition ``player $p$ is in offside position''.
+  For simplicity you may assume that the pitch is a
+  one-dimensional line and that both the ball and the players are
+  distinct points on this line. Write your proposition as an
+  equivalence, i.e. $\forall p. \mathit{offside}(p) \iff \dots$,
+  where $\dots$ is your definition. You may want to introduce
+  helper functions for getting different positions on the pitch or
+  for getting sets of players\footnote{\textbf{Hint:} Set
+    comprehensions may also come in handy. For example, the set of
+    all even natural numbers can be written as
+    $\{n ~|~ n \in \mathbb{N} \land n~mod~2 = 0\}$}.
+  % ∀p. offside(p) <=>
+  %     pos(p) < goal(p)/2 ∧
+  %     pos(p) < ball ∧
+  %     forall q. q ∈ {q | q ∈ opponents(p) ∧ pos(q) > min(positions(opponents(p)))} ==> pos(p) < pos(q)
+\end{enumerate}
+
+\section{Writing Formal Proofs}
+
+In this section we cover \TODO{Continue here}
+
+\subsection{Implications and Assumptions}
+
+\subsection{Quantifiers}
+
+\subsection{Proof by Induction}
+
+\subsection{Proof by Contradiction}
+
+\subsection{Exercises}
+
+% - Koncept (varje koncept har exempel)
+%   - Implikationer och antaganden
+%   - Kvantifierare
+%   - (Strukturell) induktion
+%   - Motsägelsebevis
+% - Övningar
+
+\section{Bonus: Motivation for Why Structural Induction Works}
+
+% - Överkurs om induktion
+
+\section{Suggested Solutions}
+
+The selected solutions are omitted before the seminar.
+
 \end{document}

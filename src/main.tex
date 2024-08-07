@@ -20,10 +20,12 @@ $\square$\end{quote}}
 \newcommand{\RED}[1]{\textcolor{red}{#1}}
 \newcommand{\TODO}[1]{\RED{TODO: #1}}
 
+\newcounter{theExerciseCounter}
+
 \title[So You Think You Can Prove?]{So You Think You Can Prove?\\
 {\large A Practical Tutorial in Writing Formal Proofs}}
 
-\author{Elias Castegren, Ellen Arvidsson}
+\author{Elias Castegren}
 
 \synctex=1
 
@@ -36,16 +38,21 @@ $\square$\end{quote}}
 
 \section{Motivation}
 
-The purpose of this document is to teach you about mathematical
-reasoning; in particular how to write \emph{formal proofs}. A
-formal proof is a sequence of steps that transforms one
-configuration of symbols into another configuration of symbols
+The purpose of this document is to refresh your knowledge about
+mathematical reasoning; in particular how to write \emph{formal
+  proofs}. A formal proof is a sequence of steps that transforms
+one configuration of symbols into another configuration of symbols
 (i.e. the thing you want to prove)\footnote{For example, the
   starting configuration might be $1 + (2 + 3)$, and the steps
-  might be $1 + (2 + 3) = 1 + 5 = 6$}. Writing formal proofs isn't
-always necessary to convince anyone of your point, but in order to
-learn how to conduct mathematical reasoning it is important to
-know the underlying formal techniques.
+  might be $1 + (2 + 3) = 1 + 5 = 6$.}.
+%
+The point of a proof is to present arguments that convince someone
+(possibly yourself!) that something is true.
+%
+Writing formal proofs isn't always necessary to convince anyone of
+your point, but in order to learn how to conduct mathematical
+reasoning it is important to know the underlying formal
+techniques.
 
 This document should not be seen as a beginner's text book in
 logic or even formal proofs -- the text assumes that you have a
@@ -57,19 +64,20 @@ machinery requires practice. The second goal is therefore to
 provide you with a set of practical tools that you can use when
 doing your own formal proofs.
 
-The rest of this tutorial has three sections.
+The rest of this tutorial has two main sections.
 %
 The first section covers how to formalise informal statements,
 that is, how to translate natural language into the symbols that
 your proofs will be dealing with.
 %
-The following section covers techniques for formal proofs, sorted
-by the kinds of formal constructs you might come across and how to
+The second section covers techniques for formal proofs, sorted by
+the kinds of formal constructs you might come across and how to
 handle them.
 %
-Finally, the last section motivates the concept of structural
-induction. This section should be seen as bonus content for the
-interested reader.
+There is also a bonus section that motivates the concept of
+structural induction\footnote{It is fully possible to \emph{use}
+  induction without understanding it formally, but the section is
+  included for the interested reader.}.
 %
 Each section comes with a couple of exercises. Suggested solutions
 are provided at the end of this document.
@@ -89,13 +97,14 @@ exercise or assignment will give you a formal statement to begin
 with, but most times you will not be so lucky.
 
 When dealing with proofs, we typically call a statement that can
-be true or false (but not both) a \emph{proposition}\footnote{In
-  general we will use ``derivable'' instead of ``true'', since we
-  might be looking at what we can derive with a given set of rules
-  rather than be concerned with the concept of truth. }. Here are
-three examples of propositions:
+be true or false (but not both) a
+\emph{proposition}\footnote{Often we will use ``derivable''
+  instead of ``true'', since we might be looking at what we can
+  derive with a given set of rules rather than be concerned with
+  the philosophical concept of truth. }. Here are three examples
+of propositions:
 \begin{itemize}
-\item ``Three is smaller than two''
+\item ``Three is less than two''
 \item ``There is at least one natural number between five
 and ten''
 \item ``Bananas are yellow''
@@ -107,13 +116,13 @@ still a proposition!
 %
 In order to write the third statement down formally, we need a way
 to write down the concepts of ``something being a banana'' and
-``something beng yellow''. These are examples of
+``something being yellow''. These are examples of
 \emph{predicates}. Predicates can be thought of as functions whose
 result is a proposition; we can write $\mathit{banana}(x)$ or
 $\mathit{yellow}(x)$ for the propositions that $x$ (whatever it
 is) is a banana or yellow respectively. Note that
 $\mathit{yellow}$ is a predicate, while $\mathit{yellow}(x)$ is a
-proposition.
+proposition (assuming $x$ is defined).
 
 \marginnote{\textbf{Glossary}\\
 \begin{itemize}
@@ -128,7 +137,7 @@ follows:
 
 \begin{itemize}
 \item $3 < 2$
-\item $\exists n : \mathbb{N} .~ 5 < n ~\land~ n < 10$
+\item $\exists n \in \mathbb{N} .~ 5 < n ~\land~ n < 10$
 \item $\forall b. \mathit{banana}(b) \implies \mathit{yellow}(b)$
 \end{itemize}
 
@@ -140,41 +149,41 @@ important step for now is that there is a \emph{symbolic
   representation} of these properties.
 
 Note also that we used (for example) the symbol $<$ without
-introducing it. This is because it already has a meaning that one
-can be expected to understand. Indeed, the symbol $<$ is also a
-predicate, but one that takes two arguments (note how $3 < 2$ is a
-proposition). A predicate that takes two or more arguments is
-often called a \emph{relation}.
+introducing it. This is because it already has a meaning that a
+reader can be expected to understand. Indeed, the symbol $<$ is
+also a predicate, but one that takes two arguments (note how
+$3 < 2$ is a proposition). A predicate that takes two or more
+arguments is often called a \emph{relation}.
 
-\begin{example}\label{busdriver}
+\begin{example}\label{ex:busdriver}
   There is a Swedish children's song (to the tune of ``Oh
   Tannenbaum'') called ``En busschauff\"{o}r'' whose lyrics let us
-  know that ``A bus driver is a man with a jolly
+  know that ``A bus driver is a man with a happy
   mood''\footnote{Swedish children learn the logical concept of
     the \emph{contrapositive} from an early age. The song
-    continues to state that ``if he does not have a jolly mood,
+    continues to state that ``if he does not have a happy mood,
     then he is no bus driver'':
-    $\forall p. \lnot \mathit{jolly}(p) \implies \lnot
+    $\forall p. \lnot \mathit{happy}(p) \implies \lnot
     \mathit{busDriver}(p)$}. In order to formalise this
   proposition, we start by defining three predicates:
   \begin{itemize}
-  \item $\mathit{busDriver}~p$ -- the person $p$ is a bus driver
-  \item $\mathit{male}~p$ -- the person $p$ identifies as male
-  \item $\mathit{jolly}~p$ -- the person $p$ has a jolly mood
+  \item $\mathit{busDriver}(p)$ -- $p$ is a bus driver
+  \item $\mathit{male}(p)$ -- $p$ identifies as male
+  \item $\mathit{happy}(p)$ -- $p$ has a happy mood
   \end{itemize}
   The proposition of the song can now be formalised as ``for any
   person $p$, if $p$ is a bus driver, then $p$ is male and $p$ has
-  a jolly mood'':
+  a happy mood'':
   \[
     \forall p.
-    \mathit{busDriver}~p \implies
-    \mathit{male}~p ~\land~
-    \mathit{jolly}~p
+    \mathit{busDriver}(p) \implies
+    \mathit{male}(p) ~\land~
+    \mathit{happy}(p)
   \]
   Again, we can learn from this example is that it is perfectly
-  possible to formalise propositions which are not true; most of
+  possible to formalise propositions which are not true: most of
   us will have met bus drivers who do not identify as male or who
-  we would not classify as jolly.
+  we would not classify as happy.
 \end{example}
 
 One of the points of translating an informal statement to a formal
@@ -193,19 +202,20 @@ proposition, we get rid of this ambiguity:
 
 \noindent
 The ambiguity of natural languages also shows up in how we use
-conjunctions like ``or'' when we speak. If you asking someone if
-they would like tea or coffee, you are implicitly expecting them
-to pick one of them, and not both\footnote{While it is logically
-  correct to answer ``yes'' to the question ``Would you like tea
-  or coffee'', it is also quite obnoxious. Don't be that person.
-}. In logic there is a distinction between ``inclusive or'' and
-``exclusive or'', each with their own (clearly defined) semantics.
+conjunctions like ``or'' when we speak. If you are asking someone
+if they would like tea or coffee, you are implicitly expecting
+them to pick one of them, and not both\footnote{While it is
+  logically correct to answer ``yes'' to the question ``Would you
+  like tea or coffee'', it is also quite obnoxious. Don't be that
+  person. }. As you know, in logic there is a distinction between
+``inclusive or'' and ``exclusive or'', each with their own
+(clearly defined) semantics.
 
 We will end this section with an example that is more connected to
 computer science than the colour of bananas and the mood of bus
 drivers.
 
-\begin{example}
+\begin{example}\label{ex:filter}
   A list is either empty or consists of one element followed by
   the rest of the list. A list can be \emph{filtered} given some
   predicate $P$, such that elements that do not satisfy $P$ are
@@ -218,20 +228,27 @@ drivers.
 
   If we assume the existence of a $\mathit{filter}$ operation and
   a relation $\mathit{member}$ that holds if a given integer is in
-  a given list, we can formalise the main property as a
+  a given list, we can formalise the this property as a
   proposition:
   \[
-    \forall x, l.~P(x) ~\land~ \mathit{member}(x, l)
+    \forall P, x, l.~P(x) ~\land~ \mathit{member}(x, l)
     \implies
     \mathit{member}(x, \mathit{filter}(l, P))
   \]
   We will go ahead and formalise this with enough details so that
   we can actually prove that what we have said holds (although
-  \RED{the proof will be given in a later section}).
+  the proof will be given in a later section).
 
-  We start by defining the grammar of lists of integers:
+  We start by defining the syntax of lists, keeping the elements
+  abstract\footnote{We could for example declare some set of
+    possible list elements $\mathbb{E}$ and say that $x$ is some
+    element of that set: $x \in \mathbb{E}$.}. We write this in
+  Backus-Naur form, use $\epsilon$ to mean ``the empty list'' and
+  separate elements of the list with semicolons:
 
-  $\mathit{list} ::= \epsilon ~|~ n; \mathit{list}$
+  \[
+      \mathit{list} ::= \epsilon ~|~ x; \mathit{list}
+  \]
 
   \noindent
   We then continue to define the operation $\mathit{filter}$ which
@@ -240,8 +257,8 @@ drivers.
   $\mathit{filter(l, P)} =
   \begin{cases}
     \epsilon & \text{if } l = \epsilon\\
-    n; \mathit{filter}(l', P) & \text{if } l = n; l' \text{ and } P(n) \text{ holds}\\
-    \mathit{filter}(l', P) & \text{if } l = n; l' \text{ and } P(n) \text{ does not hold}\\
+    x; \mathit{filter}(l', P) & \text{if } l = x; l' \text{ and } P(x) \text{ holds}\\
+    \mathit{filter}(l', P) & \text{if } l = x; l' \text{ and } P(x) \text{ does not hold}\\
   \end{cases}$
 
   \noindent
@@ -260,16 +277,18 @@ drivers.
 \subsection{Exercises}
 
 \begin{enumerate}
-\item\label{freshclean} The Outkast song ``So Fresh, So Clean''
+\item\label{ex:freshclean} The Outkast song ``So Fresh, So Clean''
   from the 2000 album Stankonia starts with the statement ``Ain't
   nobody dope as me, I'm just so fresh, so clean''. Formalise this
   statement, assuming this can be generalised so that any person
   who is both fresh and clean is more dope than anyone
   else\footnote{You can ignore the fact that this introduces a
     contradiction if there are two people who are both fresh and
-    clean}. Start by introducing any predicates you might need.
-  % ∀p. fresh(p) ∧ clean(p) => ∀q. dopeness q < dopeness p
-\item The offside rule in soccer states that a player is in
+    clean}. Start by introducing any predicates and functions you
+  might need.
+  % ∀p. fresh(p) ∧ clean(p) => ∀q. dopeness(q) < dopeness(p)
+
+\item\label{ex:offside} The offside rule in soccer states that a player is in
   ``offside position'' if they are
   \begin{enumerate}
   \item in the opponents' half of the pitch;
@@ -294,28 +313,560 @@ drivers.
   %     pos(p) < goal(p)/2 ∧
   %     pos(p) < ball ∧
   %     forall q. q ∈ {q | q ∈ opponents(p) ∧ pos(q) > min(positions(opponents(p)))} ==> pos(p) < pos(q)
+\setcounter{theExerciseCounter}{\value{enumi}}
 \end{enumerate}
+
 
 \section{Writing Formal Proofs}
 
-In this section we cover \TODO{Continue here}
+In this section we cover how to work with different logical
+constructs that you might come across while working on a proof. We
+also cover two proof techniques: proof by induction and proof by
+contradiction.
 
-\subsection{Implications and Assumptions}
+All proofs have a \emph{goal}, the thing you are trying to prove
+holds. You also have a set of \emph{assumptions}, things that you
+are assuming holds already\footnote{Sometimes assumptions are
+  called \emph{hypotheses}. Note that we use the same terminology
+  even for things that are obviously true (like $1=1$), even
+  though it seems to imply that we might not be sure.}. In formal
+proofs, both the goal and the assumptions are propositions as seen
+in the previous section. The process of conducting a proof is
+plotting a path starting from the assumptions and ending in the
+goal, making sure that each step along the way is correct.
+
+So how does one ensure that only correct steps are taken? This is
+varies depending on how formal you want to be in your proof. In
+the end, the point of a proof is convincing someone that a
+proposition holds. Sometimes the right level of formality is just
+using natural language, and sometimes the right level is to derive
+every step from logical axioms\footnote{There is special kind of
+  software called \emph{proof assistants} which checks every step
+  you make in a proof, ensuring that you only take correct
+  steps.}.
+%
+In the following sections we will take a middle route where we
+write our goals and assumptions formally, but write our reasoning
+using natural language.
+
+The mechanical steps involved in handling the different logical
+constructs covered here are different depending on whether the
+construct appears as a goal or in an assumption.
+
+
+\subsection{Implication}
+
+The most basic logical construct is the implication
+$A \implies B$. It states that if we know $A$, then we can also
+know $B$\footnote{An implication $A \implies B$ is like a function
+  whose argument is (a proof of) $A$ and whose result is (a proof
+  of) $B$.}. There are two important things to note. Firstly,
+there is nothing that says that we \emph{have to} use $A$ when
+proving $B$, just that we are allowed to. Secondly, if we happen
+to know that $A$ does \emph{not} hold, this does not say anything
+about whether $B$ holds or not.
+
+\paragraph{In the Goal}
+If our goal is an implication $A \implies B$, we are asked to show
+that we can derive $B$ starting from $A$ (and whatever other
+assumptions we may have). We do this by adding $A$ to our set of
+assumptions and proceeding to show $B$.
+
+\paragraph{As an Assumption}
+If we have an implication $A \implies B$ as an assumption, we may
+use this assumption to show $B$ if we have $A$ as another
+assumption.
+
+\paragraph{Examples}
+
+\begin{itemize}
+\item For any $n$, show $n < 5 \implies n + 2 < 7$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by assuming $n < 5$. We need to show $n + 2 < 7$.
+  \item By basic algebra, $n + 2 < 5 + 2$.
+  \item By basic arithmetics, $5 + 2 = 7$, giving $n + 2 < 7$. $\square$
+  \end{compactenum}
+\item For any $n$, show $n < 5 \implies 5 < 7$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by assuming $n < 5$. We need to show $5 < 7$,
+    which holds trivially\footnote{Note that we didn't need to use
+      the assumption here, but we still ``peel it off'' in order
+      to reach the right-hand side.}. $\square$
+  \end{compactenum}
+\item Assuming $A \implies B$ and $B \implies C$, show $A \implies C$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by assuming $A$. We need to show $C$.
+  \item By the first assumption\footnote{With only two
+      assumptions, we can get away with just referring to them as
+      ``the first'' and ``the second''. For larger proofs it is a
+      good idea to give names to your different assumptions. },
+    having $A$ gives us $B$.
+  \item By the second assumption, having $B$ gives us $C$. $\square$
+  \end{compactenum}
+\end{itemize}
+
+A special case of proofs involving implications occur when the
+left-hand side of an implication does not hold. Remember that for
+$A \implies B$ we are only asked to show $B$ \emph{if} $A$ holds.
+If $A$ does not hold, we don't have to do anything; we say that
+the proposition \emph{holds vacuously}. Similarly, if one of our
+assumptions turns out to be false, we can conclude the proof,
+since we have ended up in a situation that cannot
+happen\footnote{This is known as the \emph{principle of
+    explosion}, or by the Latin phrase \emph{Ex falso quodlibet},
+  ``from falsehood [follows] anything''.}.
+
+
+\subsection{Equivalence}
+
+An equivalence $A \iff B$ says that $A$ is true if \emph{and only
+  if} $B$ is true. It is equivalent (no pun intended) to having
+two implications, $A \implies B$ and $B \implies A$.
+
+\paragraph{In the Goal}
+If our goal is an equivalence $A \iff B$, we need to show both
+directions of the equivalence. In other words, we need to show
+both $A \implies B$ and $B \implies A$.
+
+\paragraph{As an Assumption}
+If we have an equivalence $A \iff B$ as an assumption, we may use
+this assumption to show $B$ if we have $A$ as another assumption,
+or to show $A$ if we have $B$ as another
+assumption\footnote{Again, it is as if we had two assumptions, one
+  for each direction of the equivalence}.
+
+\paragraph{Example}
+
+\begin{itemize}
+\item For any $n \leq 0$, show that $n < 10 \iff n^2 < 100$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by showing the first direction $n < 10 \Longrightarrow n^2 < 100$:
+    \begin{compactenum}
+    \item We start by assuming $n < 10$. We need to show $n^2 < 100$.
+    \item By basic algebra, we have $n^2 < 10^2$.
+    \item By basic arithmetics, $10^2 = 100$, giving $n^2 < 100$.
+    \end{compactenum}
+  \item Next we show the second direction $n^2 < 100 \implies n < 10$:
+    \begin{compactenum}
+    \item We start by assuming $n^2 < 100$. We need to show $n < 10$.
+    \item By basic algebra, we have $\sqrt{n^2} < \sqrt{100}$.
+    \item By basic algebra, $\sqrt{n^2} = n$,
+    \item By basic arithmetics, $\sqrt{100} = 10$, giving $n < 10$.
+    \end{compactenum}
+    $\square$
+  \end{compactenum}
+\end{itemize}
+
+
+\subsection{Conjunctions and Disjunctions}
+
+\marginnote{\textbf{Connectives}\\
+  Implication, equivalence, conjunctions and disjunctions are all
+  examples of logical \emph{connectives}. A connective is a
+  predicate whose arguments are one or more propositions. Another
+  connective that you are likely to come across is negation
+  $\lnot A$.}
+
+Conjunctions (written $\land$) and disjunctions ($\lor$) are the
+fancy names of logical \emph{and} and logical \emph{or}.
+%
+A conjunction $A \land B$ is true if both $A$ and $B$ are true.
+%
+A disjunction $A \lor B$ is true if at least one of $A$ and $B$ are true.
+
+\paragraph{In the Goal}
+If our goal is a conjunction $A \land B$, we need to show both $A$
+and $B$. We can do this by splitting our proof into two
+sub-proofs, just as we did for the equivalence proof above.
+%
+If our goal is a disjunction $A \lor B$, we need to show either
+$A$ or $B$.
+
+\paragraph{As an Assumption}
+If we have a conjunction $A \land B$ as an assumption, we get to
+assume both $A$ and $B$. If we have a disjunction $A \lor B$ as an
+assumption, since either $A$ or $B$ must be true, we can split our
+proof into two sub-proofs, one where we assume only $A$ and one
+where we assume only $B$\footnote{Note that we are not assuming
+  that if $A$ is true, then $B$ is false. It is possible that they
+  are both true at the same time. }.
+
+
+\paragraph{Examples}
+
+\begin{itemize}
+\item Show commutativity of conjunction, i.e. $A \land B \implies B \land A$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by assuming $A \land B$. We need to show $B \land A$
+  \item Our assumption lets us assume $A$ and $B$.
+  \item We can show $B \land A$ by showing $B$ and $A$ separately,
+    both of which hold by assumption. $\square$
+  \end{compactenum}
+\item Show commutativity of disjunction, i.e. $A \lor B \implies B \lor A$.\\
+  \begin{compactenum}
+  \item We start by assuming $A \lor B$. We need to show $B \lor A$.
+  \item We proceed by cases over the assumption $A \lor B$:
+    \begin{compactenum}
+    \item If $A$ holds, then that is enough to show $B \lor A$.
+    \item If $B$ holds, then that is enough to show $B \lor A$.
+    \end{compactenum}
+  \end{compactenum}
+  $\square$
+\end{itemize}
 
 \subsection{Quantifiers}
 
+Quantifiers are used to give names to things for some duration.
+The two most common quantifiers in logic are ``for all''
+($\forall$), used to introduce a name that represents all
+instances of something, and ``exists'' ($\exists$), used to
+introduce a name that represents a particular but unspecified
+instance of something.
+
+\paragraph{In the Goal}
+If our goal has the form $\forall x. P(x)$, where $P$ can be any
+proposition mentioning $x$\footnote{Or not. There is no rule that
+  requires $x$ to be mentioned, but if it isn't mentioned there is
+  no point in the quantifier being there.}, we can assume that we
+have \emph{some} $x$ and proceed by showing that $P$ holds for
+that $x$.
+%
+If our goal has the form $\exists x. P(x)$, we need to provide some
+concrete value for which $P$ holds.
+
+\paragraph{As an Assumption}
+If we have an assumption $\forall x. P(x)$, we are allowed to
+assume that $P$ holds for \emph{any} $x$ that appears in our
+assumptions\footnote{In practice, there will almost always be some
+  kind of precondition on $x$, for example that it is natural
+  number: $\forall x\in\mathbb{N}.~P(x)$}.
+%
+If we have an assumption $\exists x. P(x)$, we are allowed to
+assume that we have some concrete instance $x$ for which $P$
+holds.
+
+\paragraph{Examples}
+\begin{itemize}
+\item Show
+  $\forall n\in\mathbb{N}. 0 < n \implies \exists m\in\mathbb{N}.
+  m < n$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by assuming that we have some natural number $n$
+    such that $0 < n$. We need to show
+    $\exists m\in\mathbb{N}. m < n$.
+  \item We pick $0$ as a concrete value. We need to show $0 < n$
+    which holds by assumption. $\square$
+  \end{compactenum}
+
+  \marginnote{\textbf{Duality}\\
+    Note how the two quantifiers behave sort of like opposites: we
+    are allowed to assume the existence of a value when we have a
+    $\forall$ in the goal or when we have an $\exists$ in our
+    assumptions, but we have to provide a value when we have a
+    $\forall$ in our assumptions or an $\exists$ in our goal. This
+    is an example of a \emph{duality}, a deep mathematical
+    connection that often pops up in formal logic. }
+
+\item Show
+  $\forall n\in\mathbb{N}. \exists m\in\mathbb{N}. n = m + 1 \implies n \neq 0$.\\
+  \textbf{Proof}
+  \begin{compactenum}
+  \item We start by assuming that we have some natural number $n$
+    and that $\exists m\in\mathbb{N}. n = m + 1$. We need to show
+    $n \neq 0$.
+  \item We assume that we have some natural number $m$ such that
+    $n = m + 1$.
+  \item We need to show $m + 1 \neq 0$, which holds trivially
+    since $m$ cannot be smaller than $0$, the smallest natural
+    number. $\square$
+  \end{compactenum}
+\end{itemize}
+
+
 \subsection{Proof by Induction}
+
+Some kinds of values can only take on a finite number of forms.
+This allows us to do proofs by enumeration. For example, if we
+wanted to show that $A \implies A \lor B$ we can just write out
+the truth table for all possible values of $A$ and $B$ and see
+that the result is always true:
+
+\begin{tabular}{ccc}
+  $A$&$B$&$A \implies A \lor B$\\
+  \hline
+  $F$ & $F$ & $F \implies F \lor F \equiv T$\\
+  $F$ & $T$ & $F \implies F \lor T \equiv T$\\
+  $T$ & $F$ & $T \implies T \lor F \equiv T$\\
+  $T$ & $T$ & $T \implies T \lor T \equiv T$\\
+\end{tabular}
+
+However, a lot of the time the things we reason about can be
+arbitrarily large\footnote{Sometimes even infinite, but we try to
+  avoid that whenever possible since infinities are weird...}. For
+example, if we want to prove something about natural numbers we
+will not be able to list all of them. The standard technique for
+dealing with this is doing a proof by induction.
+
+If we want to prove some property $P$ about natural numbers, a
+proof by induction is done in two steps: the \emph{base case},
+where we show that $P$ holds for the number $0$, and the
+\emph{inductive case} where we show that $P$ holds for $k + 1$,
+assuming $P$ holds for some number $k$.
+%
+The intuition is that the base case gives us $P(0)$, and then the
+inductive case first gives us $P(1)$ (for $k = 0$), and then
+$P(2)$ (for $k = 1$), and so on up to any number\footnote{You can
+  think of an inductive proof as defining a \emph{procedure} for
+  how to prove the property for any given number.}.
+%
+The assumption that $P$ holds for some $k$ in the inductive case
+is known as the \emph{induction hypothesis}.
+
+\begin{example}\label{ex:distr}
+  Show that multiplication distributes over addition:
+  $\forall n,a,b.~n\cdot(a+b) = n\cdot a + n\cdot b$.
+
+  \textbf{Proof}\\
+  We assume that we have some natural numbers $n$, $a$ and $b$.
+  We need to show $n\cdot(a+b) = n\cdot a + n\cdot b$.
+  %
+  We proceed by induction over $n$\footnote{It is always important
+    to state which natural number you are doing induction over as
+    there is often more than one number involved. }.
+  \begin{itemize}
+  \item \textbf{Base Case}: $n = 0$. Need to show $0 \cdot (a + b) = 0 \cdot a + 0 \cdot b$
+    \begin{compactenum}
+    \item By arithmetics, we have $0 \cdot (a + b) = 0$.
+    \item Similarly, we have $0 = 0 \cdot a + 0 \cdot b$, thus
+      $0 \cdot (a + b) = 0 \cdot a + 0 \cdot b$.
+    \end{compactenum}
+  \item \textbf{Inductive Case}: $n = k + 1$. Need to show
+    $(k + 1) \cdot (a + b) = (k + 1) \cdot a + (k + 1) \cdot b$\\
+    \textit{Induction Hypothesis}: $k \cdot (a + b) = k \cdot a + k \cdot b$
+    \begin{compactenum}
+    \item By the definition of multiplication, we have
+      $(k + 1) \cdot (a + b) = k \cdot (a + b) + (a + b)$.
+    \item By the induction hypothesis we have
+      $k \cdot (a + b) + (a + b) = k \cdot a + k \cdot b + (a + b)$.
+    \item By the definition of multiplication, we have
+      $k \cdot a + k \cdot b + (a + b) = (k + 1) \cdot a + (k + 1)
+      \cdot b$, thus
+      $(k + 1) \cdot (a + b) = (k + 1) \cdot a + (k + 1) \cdot b$.
+    \end{compactenum}
+  \end{itemize}
+\end{example}
+
+Remember that formal proofs are about manipulating symbols until
+they have some desired shape. In the example above we try to
+always be clear about what that desired shape is (that's why we
+repeat ``need to show'' even in the different cases). We make
+clear when we start our induction proof and which case we are on.
+For each step of the proof, we manipulate our current symbols and
+write why this step is motivated. Ideally, the last step of every
+(sub) proof contains the exact symbols listed as ``need to show''
+at the start.
+
+You have probably seen induction proofs used for natural numbers
+before, but the technique generalises to anything that has an
+\emph{inductive structure}, for example trees, lists, programs,
+\emph{etc}\footnote{\RED{See the bonus section} below for an
+  explanation of inductive structures. Here we will only cover the
+  mechanics of it.}. For example, recall the definition of lists
+from Example~\ref{ex:filter}:
+\[
+  \mathit{list} ::= \epsilon ~|~ x; \mathit{list}
+\]
+We can prove some property $P$ of lists by using \emph{structural
+  induction}. We start by showing the base case, that $P$ holds
+for the empty list $\epsilon$, and then we show the inductive
+case, that $P$ holds for some arbitrary but non-empty list
+$x;\mathit{list}$, assuming that $P$ holds for the sublist
+$\mathit{list}$.
+%
+The intuition is the same as for induction over
+numbers\footnote{The similarities become even more apparent when
+  you consider Peano's definition of natural numbers $n$:
+  $n ::= 0 ~|~ S~n$. A natural number is either zero, or the
+  successor of another natural number. }: the base case gives us
+$P(\epsilon)$, and then the inductive case gives us
+$P(x;\epsilon)$ (for any $x$ and for $\mathit{list} = \epsilon$),
+and then $P(y;x;\epsilon)$ (for any $y$ and for
+$\mathit{list} = x;\epsilon$), and so on up to a list of arbitrary
+length.
+
+\begin{example}\label{ex:filterproof}
+  In Example~\ref{ex:filter} we formalised a proposition relating
+  to filtering of lists that we will now prove:
+  \[
+    \forall x, l.~P(x) ~\land~ \mathit{member}(x, l)
+    \implies
+    \mathit{member}(x, \mathit{filter}(l, P))
+  \]
+
+  We start by assuming we have some element $x$ and list $l$ such
+  that $P(x)$ and $\mathit{member}(x, l)$\footnote{Here we are
+    introducing quantified variables $x$ and $l$, assuming the
+    left-hand side of the implication and splitting the
+    conjunction $P(x) ~\land~ \mathit{member}(x, l)$ in a single
+    step.}. We need to show
+  $\mathit{member}(x, \mathit{filter}(l, P))$. We proceed by
+  structural induction over $l$.
+  \begin{itemize}
+  \item \textbf{Base Case}: $l = \epsilon$. Need to show $\mathit{member}(x, \mathit{filter}(\epsilon, P))$\\
+    \textit{Assumption 1}: $\mathit{member}(x, \epsilon)$\\
+    \textit{Assumption 2}: $P(x)$\\
+    \begin{compactenum}
+    \item By \textit{Assumption 1}, we have
+      $\mathit{member}(x, \epsilon)$. But this is impossible,
+      since both derivation rules of $\mathit{member}$ requires a
+      non-empty list. The base case thus holds vacuously.
+    \end{compactenum}
+  \item \textbf{Inductive Case}: $l = y; l'$. Need to show
+    $\mathit{member}(x, \mathit{filter}(y; l', P))$\\
+    \textit{Induction Hypothesis}\footnote{Note that the induction
+      hypothesis turns into an implication when we have
+      assumptions that mention the variable we are doing induction
+      over. If we didn't do this, we could prove things that are
+      not true. }:
+    $\mathit{member}(x, l') \implies \mathit{member}(x,
+    \mathit{filter}(l', P))$\\
+    \textit{Assumption 1}: $\mathit{member}(x, y; l')$\\
+    \textit{Assumption 2}: $P(x)$\\
+    We proceed by cases over \textit{Assumption 1}:
+    \begin{itemize}
+      \item \textbf{Case 1}: $x = y$. Need to show
+        $\mathit{member}(x, \mathit{filter}(x; l', P))$.
+        \begin{compactenum}
+        \item By the definition of $\mathit{filter}$ (case 2,
+          since we have $P(x)$ from \textit{Assumption 2}) we have
+          $\mathit{filter}(x; l', P) = x; \mathit{filter}(l', P)$.
+        \item We have
+          $\mathit{member}(x, x; \mathit{filter}(l', P))$ by the
+          first derivation rule of $\mathit{member}$.
+        \end{compactenum}
+      \item \textbf{Case 2}: $\mathit{member}(x; l')$
+        (\textit{Assumption 3}). Need to show
+        $\mathit{member}(x, \mathit{filter}(y; l', P))$.
+        \begin{compactenum}
+        \item By the definition of $\mathit{filter}$ there are two
+          possible values of $\mathit{filter}(y; l', P)$ depending
+          on whether $y$ is removed or not.
+        \item If $y$ is removed we have
+          $\mathit{member}(x, \mathit{filter}(l', P))$ by the
+          induction hypothesis with \textit{Assumption 3}.
+        \item If $y$ is not removed, we have
+          $\mathit{member}(x, y; \mathit{filter}(l', P))$ by the
+          second derivation rule of $\mathit{member}$, getting the
+          premise from the induction hypothesis with
+          \textit{Assumption 3}.
+        \end{compactenum}
+      \end{itemize}
+  \end{itemize}
+\end{example}
+
+Most parts of a proof by induction can be done mechanically
+without thinking. The creative parts is choosing which variable to
+do induction over and figuring out which steps to take in order to
+get to the thing you have to prove. As long as we have a clear
+structure, filling in the cases, assumptions, the induction
+hypothesis and what the current goal is should be
+automatic\footnote{That is not to say that it is not something
+  that requires practice! }.
+
 
 \subsection{Proof by Contradiction}
 
+Another way (some would say \emph{the} other way) to prove that
+something holds for all values of some infinite set (like the
+natural numbers) is to show that it cannot \emph{not} be the case.
+We typically accept that all propositions are either true or
+false\footnote{This is known as the \emph{law of excluded middle};
+  there is no truth value between true and false. }, and if we can
+show that a proposition is not false then it must be true. This is
+known as a proof by contradiction.
+
+A proof by contradiction of some property $P$ starts out by
+assuming $\lnot P$, i.e. that $P$ does not hold, and then tries to
+derive a contradiction, i.e. an assumption that is false. It is
+not always obvious when a proof by contradiction is the right
+choice of method, but it is something that is useful to have in
+one's tool box. Personally, I reach for it when something involves
+infinity.
+
+\begin{example}
+  A classic proof by contradiction is showing that there is an
+  infinite number of prime numbers. Recall that a number is prime
+  if it is only divisible by itself and 1, and that all numbers
+  which are not prime have factors which are prime. As a
+  technicality, also recall that if $n$ is a factor of both $a$
+  and $b$, then it is also a factor of the difference of $a$ and
+  $b$\footnote{Assume $a$ is the larger of the two numbers $a$ and
+    $b$. If $n$ divides $a$ and $b$, then $\frac{a}{n}$ and
+    $\frac{b}{n}$ are integers. We can derive the equality
+    $a - b = n\frac{a}{n} - n\frac{b}{n} = n(\frac{a}{n} -
+    \frac{b}{n})$, which is clearly divisible by $n$.}.
+
+  Let us assume that there is actually a finite number of prime
+  numbers, and let us list all of them as $p_1, p_2, \dots,p_n$.
+  Let $P = p_1\cdot p_2\cdots p_n$ be the product of all primes
+  and consider the number $P + 1$. We know that $P + 1$ is not a
+  prime number (we just listed all of them!), so $P + 1$ must have
+  a prime factor $p$. Since we just listed all of the primes, $p$
+  must be one of $p_1, p_2, \dots,p_n$, meaning it is also a prime
+  factor of $P$. Since $p$ divides both $P$ and $P + 1$, it must
+  also divide $P + 1 - P = 1$. However, no prime number divides
+  $1$, so $p$ cannot be one of $p_1, p_2, \dots,p_n$. This
+  contradicts our assumption that $p_1, p_2, \dots,p_n$ contains
+  all prime numbers, therefore the prime numbers must be
+  infinitely many.
+\end{example}
+
 \subsection{Exercises}
 
-% - Koncept (varje koncept har exempel)
-%   - Implikationer och antaganden
-%   - Kvantifierare
-%   - (Strukturell) induktion
-%   - Motsägelsebevis
-% - Övningar
+\begin{enumerate}
+\setcounter{enumi}{\value{theExerciseCounter}}
+\item Show that conjunction distributes over disjunction:\\
+  $\forall A~B~C. ~A \land (B \lor C) \iff (A \land B) \lor (A
+  \land C)$. You could do this by building a truth table, but try
+  to do it using a step-by-step proof.
+\item Use induction to show that
+  $(a + b)(c + d) = ab + ad + bc + bd$ for any $a$, $b$, $c$ and
+  $d$\footnote{\textbf{Hint}: You may want to use the property
+    that we proved in Example~\ref{ex:distr} as part of your
+    proof.}.
+\item The length of a list can be defined as follows:
+  \[
+  \mathit{length}(l) =
+  \begin{cases}
+    0 & \text{if } l = \epsilon\\
+    1 + \mathit{length}(l')& \text{if } l = x; l'\\
+  \end{cases}
+  \]
+  The concatenation of two lists can be defined as follows:
+  \[
+  \mathit{concat}(l_1, l_2) =
+  \begin{cases}
+    l_2 & \text{if } l = \epsilon\\
+    x; \mathit{concat}(l_1', l_2) & \text{if } l_1 = x; l_1'\\
+  \end{cases}
+  \]
+  Show that the length of the concatenation of two lists equals
+  the sum of their individual lengths using structural induction.
+\item In Example~\ref{ex:filterproof} we showed that a filtered
+  list keeps all elements that satisfy the given predicate.
+  Another expected property of filtering is that a filtered list
+  only contains elements that satisfies the predicate. Formalise
+  this statement as a proposition and prove that it holds.
+\item Show that filtering the concatenation of two lists results
+  in the concatenation of the filtered versions of the individual
+  lists.
+\end{enumerate}
 
 \section{Bonus: Motivation for Why Structural Induction Works}
 
@@ -323,6 +874,12 @@ In this section we cover \TODO{Continue here}
 
 \section{Suggested Solutions}
 
-The selected solutions are omitted before the seminar.
+The suggested solutions are omitted before the seminar.
 
 \end{document}
+
+\subsection{Formalising Mathematical Statements}
+
+\subsection{Writing Formal Proofs}
+
+\TODO{Put actual solutions here for now}

@@ -22,8 +22,8 @@ $\square$\end{quote}}
 
 \newcounter{theExerciseCounter}
 
-\title[So You Think You Can Prove?]{So You Think You Can Prove?\\
-{\large A Practical Tutorial in Writing Formal Proofs}}
+\title[You can Prove it!]{You can Prove it!\\
+{\large A Practical Tutorial in Writing Proofs}}
 
 \author{Elias Castegren}
 
@@ -39,62 +39,72 @@ $\square$\end{quote}}
 \section{Motivation}
 
 The purpose of this document is to refresh your knowledge about
-mathematical reasoning; in particular how to write \emph{formal
-  proofs}. A formal proof is a sequence of steps that transforms
-one configuration of symbols into another configuration of symbols
-(i.e. the thing you want to prove)\footnote{For example, the
-  starting configuration might be $1 + (2 + 3)$, and the steps
-  might be $1 + (2 + 3) = 1 + 5 = 6$.}.
+mathematical reasoning; in particular how to write \emph{proofs}.
 %
 The point of a proof is to present arguments that convince someone
 (possibly yourself!) that something is true.
 %
-Writing formal proofs isn't always necessary to convince anyone of
-your point, but in order to learn how to conduct mathematical
-reasoning it is important to know the underlying formal
-techniques.
+Proofs can have varying levels of formality, from completely
+informal text\footnote{``Clearly $2 + 1 = 3$''.} to fully formal
+reasoning from definitions and axioms\footnote{``Let natural
+  numbers be either 0 or the successor $S~n$ of another natural
+  number $n$. Let $0 + m = m$ and $(S~n)+m = S~(n+m)$. By the
+  definition of $2$ and $1$, we have $2 + 1 = (S~(S~0)) + (S~0)$.
+  By the definition of $+$, we have
+  $(S~(S~0)) + (S~0) = S~((S~0) + (S~0)) = S~(S~(0 + (S~0))) =
+  S~(S~(S~0)) = 3$ (by the definition of $3$)}.
+%
+How formal you should be depends on the context and who you are
+trying to convince; if you are reasoning with a friend or yourself
+you can probably be quite informal, but if you are designing a
+railway scheduling system being very formal can be a way of being
+very sure that two trains never meet on the same track.
+%
+In this document we try to be pragmatic. We will write out and
+motivate each step of a proof, but not require reasoning from
+axioms every time.
 
 This document should not be seen as a beginner's text book in
-logic or even formal proofs -- the text assumes that you have a
-basic understanding of both logic and proofs. The first goal of
-this document is to have you brush up on this understanding and
-remind you about concepts and terminology. A large part of formal
-proofs is quite mechanical, but learning how to operate the
-machinery requires practice. The second goal is therefore to
-provide you with a set of practical tools that you can use when
-doing your own formal proofs.
+logic or even proofs -- the text assumes that you have a basic
+understanding of both logic and proofs. The first goal of this
+document is to have you brush up on this understanding and remind
+you about concepts and terminology. A large part of doing proofs
+is quite mechanical, but learning how to operate the machinery
+requires practice. The second goal is therefore to provide you
+with a set of practical tools that you can use when doing your own
+proofs.
 
 The rest of this tutorial has two main sections.
 %
-The first section covers how to formalise informal statements,
-that is, how to translate natural language into the symbols that
-your proofs will be dealing with.
+The first section covers how to translate informal statements into
+formal ones -- that is, how to translate natural language into
+mathematical symbols that clearly and unambiguously express what
+you mean.
 %
-The second section covers techniques for formal proofs, sorted by
-the kinds of formal constructs you might come across and how to
-handle them.
+The second section covers techniques for proofs, sorted by the
+kinds of constructs you might come across and how to handle them.
 %
-There is also a bonus section that motivates the concept of
-structural induction\footnote{It is fully possible to \emph{use}
-  induction without understanding it formally, but the section is
-  included for the interested reader.}.
+% TODO:
+% There is also a bonus section that motivates the concept of
+% structural induction\footnote{It is fully possible to \emph{use}
+%   induction without understanding it formally, but the section is
+%   included for the interested reader.}.
 %
 Each section comes with a couple of exercises. Suggested solutions
 are provided at the end of this document.
 
-\section{Formalising Mathematical Statements}
+\section{``What do you Mean by That?''}
 
-% - Formalisera matematiska påståenden
-%   - Uppställning
-%   - Exempel
-
-Before you can even start to prove anything formally, you need to
-know how to \emph{state} what it is you want to prove in a formal
-way. Since formal proofs is all about careful manipulation of
-symbols, you first need to be able to write the initial symbols
-down so that you can start manipulating them. Sometimes an
-exercise or assignment will give you a formal statement to begin
-with, but most times you will not be so lucky.
+Before you can even start to prove anything, you should understand
+what every part of the thing you are proving means. In other
+words, you need to know how to \emph{state} what it is you want to
+prove in a clear way. Once you get used to doing proofs you can
+afford to be less formal in your formulations, but in order to
+learn the mechanics of mathematical reasoning it helps to be
+explicit.
+%
+Sometimes an exercise or assignment will give you a formal
+statement to begin with, but most times you will not be so lucky.
 
 When dealing with proofs, we typically call a statement that can
 be true or false (but not both) a
@@ -114,15 +124,15 @@ and ten''
 Note that even though the first example is clearly not true, it is
 still a proposition!
 %
-In order to write the third statement down formally, we need a way
-to write down the concepts of ``something being a banana'' and
-``something being yellow''. These are examples of
-\emph{predicates}. Predicates can be thought of as functions whose
-result is a proposition; we can write $\mathit{banana}(x)$ or
-$\mathit{yellow}(x)$ for the propositions that $x$ (whatever it
-is) is a banana or yellow respectively. Note that
-$\mathit{yellow}$ is a predicate, while $\mathit{yellow}(x)$ is a
-proposition (assuming $x$ is defined).
+In order to write the third statement down with mathematical
+symbols, we need a way to express the concepts of ``something
+being a banana'' and ``something being yellow''. These are
+examples of \emph{predicates}. Predicates can be thought of as
+functions whose result is a proposition; we can write
+$\mathit{banana}(x)$ or $\mathit{yellow}(x)$ for the propositions
+that $x$ (whatever it is) is a banana or yellow respectively. Note
+that $\mathit{yellow}$ is a predicate, while $\mathit{yellow}(x)$
+is a proposition (assuming $x$ is defined).
 
 \marginnote{\textbf{Glossary}\\
 \begin{itemize}
@@ -142,18 +152,22 @@ follows:
 \end{itemize}
 
 \noindent
-Note that have not formally \emph{defined} how to identify a
-banana or that an object is yellow. That may or may not be
-important for what you want to do with these predicates, but the
-important step for now is that there is a \emph{symbolic
-  representation} of these properties.
+We are not claiming that these statements are necessarily
+\emph{better} than the informal ones; one might even argue that
+the informal ones are easier to understand.
+%
+Note also that have not \emph{defined} how to identify a banana or
+that an object is yellow, which may or may not be important for
+what you want to do with these predicates. The important step for
+now is that we have put a name on these properties\footnote{There
+  is a \emph{symbolic representation} of the properties}.
 
-Note also that we used (for example) the symbol $<$ without
-introducing it. This is because it already has a meaning that a
-reader can be expected to understand. Indeed, the symbol $<$ is
-also a predicate, but one that takes two arguments (note how
-$3 < 2$ is a proposition). A predicate that takes two or more
-arguments is often called a \emph{relation}.
+Another thing to note is that we used (for example) the symbols
+$<$, $2$ and $3$ without introducing them. This is because they
+already have meanings that a reader can be expected to understand.
+Indeed, the symbol $<$ is also a predicate, but one that takes two
+arguments (note how $3 < 2$ is a proposition). A predicate that
+takes two or more arguments is often called a \emph{relation}.
 
 \begin{example}\label{ex:busdriver}
   There is a Swedish children's song (to the tune of ``Oh
@@ -165,7 +179,7 @@ arguments is often called a \emph{relation}.
     then he is no bus driver'':
     $\forall p. \lnot \mathit{happy}(p) \implies \lnot
     \mathit{busDriver}(p)$}. In order to formalise this
-  proposition, we start by defining three predicates:
+  proposition, we start by introducing three predicates:
   \begin{itemize}
   \item $\mathit{busDriver}(p)$ -- $p$ is a bus driver
   \item $\mathit{male}(p)$ -- $p$ identifies as male
@@ -317,46 +331,46 @@ drivers.
 \end{enumerate}
 
 
-\section{Writing Formal Proofs}
+\section{``Oh yeah? Prove it!''}
 
-In this section we cover how to work with different logical
-constructs that you might come across while working on a proof. We
-also cover two proof techniques: proof by induction and proof by
-contradiction.
+How does one ensure that only correct steps are taken in a proof?
+This is varies depending on how formal you want to be in your
+proof. In the end, the point of a proof is convincing someone that
+a proposition holds. Sometimes the right level of formality is
+just using natural language, and sometimes the right level is to
+derive every step from logical axioms\footnote{There is special
+  kind of software called \emph{proof assistants} which checks
+  every step you make in a proof, ensuring that you only take
+  correct steps.}.
+%
+Here, we will take a middle route where we write our goals and
+assumptions formally, but write our reasoning using natural
+language.
+%
+We will cover how to work with different logical constructs that
+you might come across while working on a proof. We also cover two
+proof techniques: proof by induction and proof by contradiction.
 
 All proofs have a \emph{goal}, the thing you are trying to prove
 holds. You also have a set of \emph{assumptions}, things that you
 are assuming holds already\footnote{Sometimes assumptions are
   called \emph{hypotheses}. Note that we use the same terminology
   even for things that are obviously true (like $1=1$), even
-  though it seems to imply that we might not be sure.}. In formal
-proofs, both the goal and the assumptions are propositions as seen
-in the previous section. The process of conducting a proof is
-plotting a path starting from the assumptions and ending in the
-goal, making sure that each step along the way is correct.
-
-So how does one ensure that only correct steps are taken? This is
-varies depending on how formal you want to be in your proof. In
-the end, the point of a proof is convincing someone that a
-proposition holds. Sometimes the right level of formality is just
-using natural language, and sometimes the right level is to derive
-every step from logical axioms\footnote{There is special kind of
-  software called \emph{proof assistants} which checks every step
-  you make in a proof, ensuring that you only take correct
-  steps.}.
-%
-In the following sections we will take a middle route where we
-write our goals and assumptions formally, but write our reasoning
-using natural language.
+  though it seems to imply that we might not be sure.}. Both the
+goal and the assumptions are propositions as seen in the previous
+section. The process of conducting a proof is using logical steps
+starting from the assumptions and hopefully arriving at the goal.
 
 The mechanical steps involved in handling the different logical
 constructs covered here are different depending on whether the
-construct appears as a goal or in an assumption.
+construct appears as a goal or in an assumption. Note also that
+there is no algorithm for how to prove anything -- this section
+gives you tools that you can apply when writing proofs.
 
 
 \subsection{Implication}
 
-The most basic logical construct is the implication
+One of the most basic logical constructs is the implication
 $A \implies B$. It states that if we know $A$, then we can also
 know $B$\footnote{An implication $A \implies B$ is like a function
   whose argument is (a proof of) $A$ and whose result is (a proof
@@ -373,9 +387,9 @@ assumptions we may have). We do this by adding $A$ to our set of
 assumptions and proceeding to show $B$.
 
 \paragraph{As an Assumption}
-If we have an implication $A \implies B$ as an assumption, we may
-use this assumption to show $B$ if we have $A$ as another
-assumption.
+If we have an implication $A \implies B$ as an assumption (or as a
+previously proved proposition), we may derive $B$ if we already
+know $A$.
 
 \paragraph{Examples}
 
@@ -417,7 +431,8 @@ assumptions turns out to be false, we can conclude the proof,
 since we have ended up in a situation that cannot
 happen\footnote{This is known as the \emph{principle of
     explosion}, or by the Latin phrase \emph{Ex falso quodlibet},
-  ``from falsehood [follows] anything''.}.
+  ``from falsehood [follows] anything''.}. This also relates to
+proof by contradiction, which is covered below.
 
 
 \subsection{Equivalence}
@@ -433,10 +448,9 @@ both $A \implies B$ and $B \implies A$.
 
 \paragraph{As an Assumption}
 If we have an equivalence $A \iff B$ as an assumption, we may use
-this assumption to show $B$ if we have $A$ as another assumption,
-or to show $A$ if we have $B$ as another
-assumption\footnote{Again, it is as if we had two assumptions, one
-  for each direction of the equivalence}.
+this assumption to show $B$ if we already have $A$, or to show $A$
+if we already have $B$\footnote{Again, it is as if we had two
+  assumptions, one for each direction of the equivalence}.
 
 \paragraph{Example}
 
@@ -447,13 +461,13 @@ assumption\footnote{Again, it is as if we had two assumptions, one
   \item We start by showing the first direction $n < 10 \Longrightarrow n^2 < 100$:
     \begin{compactenum}
     \item We start by assuming $n < 10$. We need to show $n^2 < 100$.
-    \item By basic algebra, we have $n^2 < 10^2$.
+    \item By squaring both sides, we get $n^2 < 10^2$.
     \item By basic arithmetics, $10^2 = 100$, giving $n^2 < 100$.
     \end{compactenum}
   \item Next we show the second direction $n^2 < 100 \implies n < 10$:
     \begin{compactenum}
     \item We start by assuming $n^2 < 100$. We need to show $n < 10$.
-    \item By basic algebra, we have $\sqrt{n^2} < \sqrt{100}$.
+    \item By taking the square root of both sides, we get $\sqrt{n^2} < \sqrt{100}$.
     \item By basic algebra, $\sqrt{n^2} = n$,
     \item By basic arithmetics, $\sqrt{100} = 10$, giving $n < 10$.
     \end{compactenum}
@@ -534,10 +548,13 @@ proposition mentioning $x$\footnote{Or not. There is no rule that
   requires $x$ to be mentioned, but if it isn't mentioned there is
   no point in the quantifier being there.}, we can assume that we
 have \emph{some} $x$ and proceed by showing that $P$ holds for
-that $x$.
+that $x$. Note that we can pick any name for $x$ (assuming we
+update $P$ with the new name), which may be necessary if we
+already have another $x$ that means something.
 %
-If our goal has the form $\exists x. P(x)$, we need to provide some
-concrete value for which $P$ holds.
+If our goal has the form $\exists x. P(x)$, we need to provide
+some concrete value for which $P$ holds (or derive a contradiction
+from our assumptions).
 
 \paragraph{As an Assumption}
 If we have an assumption $\forall x. P(x)$, we are allowed to
@@ -662,23 +679,24 @@ is known as the \emph{induction hypothesis}.
   \end{itemize}
 \end{example}
 
-Remember that formal proofs are about manipulating symbols until
-they have some desired shape. In the example above we try to
-always be clear about what that desired shape is (that's why we
-repeat ``need to show'' even in the different cases). We make
-clear when we start our induction proof and which case we are on.
-For each step of the proof, we manipulate our current symbols and
-write why this step is motivated. Ideally, the last step of every
-(sub) proof contains the exact symbols listed as ``need to show''
-at the start.
+Note how the goal changes in the different cases. To make this
+explicit above we repeat ``need to show'' in the different cases
+so there's less to remember implicitly.
+%
+We make clear when we start our induction proof and which case we
+are on. For each step of the proof, we do something that brings us
+closer to our goal and write why this step is motivated. Ideally,
+the last step of every (sub) proof contains the exact symbols
+listed as ``need to show'' at the start.
 
 You have probably seen induction proofs used for natural numbers
 before, but the technique generalises to anything that has an
 \emph{inductive structure}, for example trees, lists, programs,
-\emph{etc}\footnote{\RED{See the bonus section} below for an
-  explanation of inductive structures. Here we will only cover the
-  mechanics of it.}. For example, recall the definition of lists
-from Example~\ref{ex:filter}:
+\emph{etc}.%\footnote{\RED{See the bonus section} below for an
+%  explanation of inductive structures. Here we will only cover the
+%  mechanics of it.}.
+For example, recall the definition of lists from
+Example~\ref{ex:filter}:
 \[
   \mathit{list} ::= \epsilon ~|~ x; \mathit{list}
 \]
@@ -868,7 +886,7 @@ infinity.
   lists.
 \end{enumerate}
 
-\section{Bonus: Motivation for Why Structural Induction Works}
+% \section{Bonus: Motivation for Why Structural Induction Works}
 
 % - Överkurs om induktion
 

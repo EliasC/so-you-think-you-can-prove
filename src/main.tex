@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 
 \newcounter{example}
+\newcounter{exc:first:proof}
 \newenvironment{example}
 {\refstepcounter{example}\begin{quote}
 \textbf{Example \arabic{example}}}
@@ -98,10 +99,24 @@ are provided at the end of this document.
 Before you can even start to prove anything, you should understand
 what every part of the thing you are proving means. In other
 words, you need to know how to \emph{state} what it is you want to
-prove in a clear way. Once you get used to doing proofs you can
-afford to be less formal in your formulations, but in order to
-learn the mechanics of mathematical reasoning it helps to be
-explicit.
+prove in a clear way. We do this by translating informal
+statements written in text to formal statements written using
+mathematical symbols.
+%
+One of the points of this is to get rid of the ambiguity that is
+prevalent in natural languages, for example in how we use
+conjunctions like ``or'' when we speak. If you are asking someone
+if they would like tea or coffee, you are implicitly expecting
+them to pick one of them, and not both\footnote{While it is
+  logically correct to answer ``yes'' to the question ``Would you
+  like tea or coffee'', it is also quite obnoxious. Don't be that
+  person. }. As you know, in logic there is a distinction between
+``inclusive or'' and ``exclusive or'', each with their own
+(clearly defined) semantics.
+
+Once you get used to doing proofs you can afford to be less formal
+in your formulations, but in order to learn the mechanics of
+mathematical reasoning it helps to be explicit.
 %
 Sometimes an exercise or assignment will give you a formal
 statement to begin with, but most times you will not be so lucky.
@@ -154,8 +169,22 @@ follows:
 \noindent
 We are not claiming that these statements are necessarily
 \emph{better} than the informal ones; one might even argue that
-the informal ones are easier to understand.
+the informal ones are easier to understand. However, we have
+gotten rid of some ambiguity from the informal statements.
 %
+For example, when we say that ``Bananas are yellow'', do we mean
+that \emph{all} bananas are yellow or that \emph{there are}
+bananas which are yellow\footnote{This distinction turns out to be
+  important: only the latter interpretation is true since there
+  are bananas which are red!}. When formalising the proposition,
+we get rid of this ambiguity:
+
+\begin{itemize}
+\item ``All bananas are yellow'' -- $\forall b. \mathit{banana}(b) \implies \mathit{yellow}(b)$
+\item ``Some bananas are yellow'' -- $\exists b. \mathit{banana}(b) \land \mathit{yellow}(b)$
+\end{itemize}
+
+\noindent
 Note also that have not \emph{defined} how to identify a banana or
 that an object is yellow, which may or may not be important for
 what you want to do with these predicates. The important step for
@@ -200,31 +229,7 @@ takes two or more arguments is often called a \emph{relation}.
   we would not classify as happy.
 \end{example}
 
-One of the points of translating an informal statement to a formal
-one is to get rid of the ambiguity that is prevalent in natural
-language. For example, when we say that ``Bananas are yellow'', do
-we mean that \emph{all} bananas are yellow or that \emph{there
-  are} bananas which are yellow\footnote{This distinction turns
-  out to be important: only the latter interpretation is true
-  since there are bananas which are red!}. When formalising the
-proposition, we get rid of this ambiguity:
-
-\begin{itemize}
-\item ``All bananas are yellow'' -- $\forall b. \mathit{banana}(b) \implies \mathit{yellow}(b)$
-\item ``Some bananas are yellow'' -- $\exists b. \mathit{banana}(b) \land \mathit{yellow}(b)$
-\end{itemize}
-
 \noindent
-The ambiguity of natural languages also shows up in how we use
-conjunctions like ``or'' when we speak. If you are asking someone
-if they would like tea or coffee, you are implicitly expecting
-them to pick one of them, and not both\footnote{While it is
-  logically correct to answer ``yes'' to the question ``Would you
-  like tea or coffee'', it is also quite obnoxious. Don't be that
-  person. }. As you know, in logic there is a distinction between
-``inclusive or'' and ``exclusive or'', each with their own
-(clearly defined) semantics.
-
 We will end this section with an example that is more connected to
 computer science than the colour of bananas and the mood of bus
 drivers.
@@ -343,9 +348,8 @@ derive every step from logical axioms\footnote{There is special
   every step you make in a proof, ensuring that you only take
   correct steps.}.
 %
-Here, we will take a middle route where we write our goals and
-assumptions formally, but write our reasoning using natural
-language.
+Here, we will take a middle route where we write all propositions
+formally, but write our reasoning using natural language.
 %
 We will cover how to work with different logical constructs that
 you might come across while working on a proof. We also cover two
@@ -371,7 +375,7 @@ gives you tools that you can apply when writing proofs.
 \subsection{Implication}
 
 One of the most basic logical constructs is the implication
-$A \implies B$. It states that if we know $A$, then we can also
+$A \!\!\implies\!\! B$. It states that if we know $A$, then we can also
 know $B$\footnote{An implication $A \implies B$ is like a function
   whose argument is (a proof of) $A$ and whose result is (a proof
   of) $B$.}. There are two important things to note. Firstly,
@@ -398,7 +402,7 @@ know $A$.
   \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $n < 5$. We need to show $n + 2 < 7$.
-  \item By basic algebra, $n + 2 < 5 + 2$.
+  \item By adding two on both sides we get $n + 2 < 5 + 2$.
   \item By basic arithmetics, $5 + 2 = 7$, giving $n + 2 < 7$. $\square$
   \end{compactenum}
 \item For any $n$, show $n < 5 \implies 5 < 7$.\\
@@ -522,6 +526,7 @@ where we assume only $B$\footnote{Note that we are not assuming
     both of which hold by assumption. $\square$
   \end{compactenum}
 \item Show commutativity of disjunction, i.e. $A \lor B \implies B \lor A$.\\
+  \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $A \lor B$. We need to show $B \lor A$.
   \item We proceed by cases over the assumption $A \lor B$:
@@ -535,7 +540,7 @@ where we assume only $B$\footnote{Note that we are not assuming
 
 \subsection{Quantifiers}
 
-Quantifiers are used to give names to things for some duration.
+Quantifiers are used to give names to things for some scope.
 The two most common quantifiers in logic are ``for all''
 ($\forall$), used to introduce a name that represents all
 instances of something, and ``exists'' ($\exists$), used to
@@ -543,14 +548,14 @@ introduce a name that represents a particular but unspecified
 instance of something.
 
 \paragraph{In the Goal}
-If our goal has the form $\forall x. P(x)$, where $P$ can be any
+If our goal has the form $\forall x. P(x)$, where $P(x)$ can be any
 proposition mentioning $x$\footnote{Or not. There is no rule that
   requires $x$ to be mentioned, but if it isn't mentioned there is
   no point in the quantifier being there.}, we can assume that we
 have \emph{some} $x$ and proceed by showing that $P$ holds for
 that $x$. Note that we can pick any name for $x$ (assuming we
 update $P$ with the new name), which may be necessary if we
-already have another $x$ that means something.
+already have another $x$ in scope.
 %
 If our goal has the form $\exists x. P(x)$, we need to provide
 some concrete value for which $P$ holds (or derive a contradiction
@@ -679,6 +684,7 @@ is known as the \emph{induction hypothesis}.
   \end{itemize}
 \end{example}
 
+\noindent
 Note how the goal changes in the different cases. To make this
 explicit above we repeat ``need to show'' in the different cases
 so there's less to remember implicitly.
@@ -692,7 +698,7 @@ listed as ``need to show'' at the start.
 You have probably seen induction proofs used for natural numbers
 before, but the technique generalises to anything that has an
 \emph{inductive structure}, for example trees, lists, programs,
-\emph{etc}.%\footnote{\RED{See the bonus section} below for an
+\emph{etc}. %\footnote{\RED{See the bonus section} below for an
 %  explanation of inductive structures. Here we will only cover the
 %  mechanics of it.}.
 For example, recall the definition of lists from
@@ -707,16 +713,15 @@ case, that $P$ holds for some arbitrary but non-empty list
 $x;\mathit{list}$, assuming that $P$ holds for the sublist
 $\mathit{list}$.
 %
-The intuition is the same as for induction over
-numbers\footnote{The similarities become even more apparent when
-  you consider Peano's definition of natural numbers $n$:
-  $n ::= 0 ~|~ S~n$. A natural number is either zero, or the
-  successor of another natural number. }: the base case gives us
-$P(\epsilon)$, and then the inductive case gives us
+The intuition is the same as for induction over numbers: the base
+case gives us $P(\epsilon)$, and then the inductive case gives us
 $P(x;\epsilon)$ (for any $x$ and for $\mathit{list} = \epsilon$),
 and then $P(y;x;\epsilon)$ (for any $y$ and for
 $\mathit{list} = x;\epsilon$), and so on up to a list of arbitrary
-length.
+length\footnote{The similarities become even more apparent when
+  you consider Peano's definition of natural numbers $n$:
+  $n ::= 0 ~|~ S~n$. A natural number is either zero, or the
+  successor of another natural number. }.
 
 \begin{example}\label{ex:filterproof}
   In Example~\ref{ex:filter} we formalised a proposition relating
@@ -725,6 +730,22 @@ length.
     \forall x, l.~P(x) ~\land~ \mathit{member}(x, l)
     \implies
     \mathit{member}(x, \mathit{filter}(l, P))
+  \]
+
+  For convenience we also list the definition of $\mathit{filter}$
+  and the derivation rules of $\mathit{member}$ again:
+
+  $\mathit{filter(l, P)} =
+  \begin{cases}
+    \epsilon & \text{if } l = \epsilon\\
+    x; \mathit{filter}(l', P) & \text{if } l = x; l' \text{ and } P(x) \text{ holds}\\
+    \mathit{filter}(l', P) & \text{if } l = x; l' \text{ and } P(x) \text{ does not hold}\\
+  \end{cases}$
+
+  \[
+    \frac{}{~\mathit{member}(x, x; \mathit{list})~}
+    \qquad
+    \frac{~\mathit{member}(x, \mathit{list})~}{~\mathit{member}(x, y; \mathit{list})~}
   \]
 
   We start by assuming we have some element $x$ and list $l$ such
@@ -756,7 +777,9 @@ length.
     \mathit{filter}(l', P))$\\
     \textit{Assumption 1}: $\mathit{member}(x, y; l')$\\
     \textit{Assumption 2}: $P(x)$\\
-    We proceed by cases over \textit{Assumption 1}:
+    There are two rules that can be used for deriving
+    $\mathit{member}(x, y; l')$. We proceed by cases over
+    \textit{Assumption 1}:
     \begin{itemize}
       \item \textbf{Case 1}: $x = y$. Need to show
         $\mathit{member}(x, \mathit{filter}(x; l', P))$.
@@ -849,7 +872,9 @@ infinity.
 
 \begin{enumerate}
 \setcounter{enumi}{\value{theExerciseCounter}}
-\item Show that conjunction distributes over disjunction:\\
+\setcounter{exc:first:proof}{\value{enumi}}
+\item
+  Show that conjunction distributes over disjunction:\\
   $\forall A~B~C. ~A \land (B \lor C) \iff (A \land B) \lor (A
   \land C)$. You could do this by building a truth table, but try
   to do it using a step-by-step proof.
@@ -892,12 +917,70 @@ infinity.
 
 \section{Suggested Solutions}
 
-The suggested solutions are omitted before the seminar.
+Some suggested solutions are omitted before the seminar.
+
+\subsection{``What do you Mean by That?''}
+
+\begin{enumerate}
+\item If someone is both fresh and clean then they are more dope
+  than everyone else. We introduce predicates $\mathit{fresh}$ and
+  $\mathit{clean}$, as well as a function $\mathit{dopeness}$ that
+  takes a person $p$ to their dopeness level (unit unspecified).
+  We use the ``for all'' quantifier to introduce names $p$ and $q$
+  for different people:
+  \[
+  \forall p.~\mathit{fresh}(p) \land \mathit{clean}(p) \implies
+  \forall q.~\mathit{dopeness}(q) < \mathit{dopeness}(p)
+  \]
+  Note that having both quantifiers in the beginning would be an
+  equivalent statement:
+  \[
+  \forall p.\forall q.~\mathit{fresh}(p) \land \mathit{clean}(p) \implies
+  \mathit{dopeness}(q) < \mathit{dopeness}(p)
+  \]
+\end{enumerate}
+
+\subsection{``Oh Yeah? Prove it!''}
+
+\begin{enumerate}
+\setcounter{enumi}{\value{exc:first:proof}}
+\item We want to show
+  $\forall A~B~C. ~A \land (B \lor C) \iff (A \land B) \lor (A
+  \land C)$. We start by assuming we have some propositions $A$,
+  $B$ and $C$ and proceed to show
+  $A \land (B \lor C) \iff (A \land B) \lor (A \land C)$. We
+  proceed by cases over the two directions:
+  \begin{itemize}
+  \item[\textbf{Case 1:}] $A \land (B \lor C) \implies (A \land B) \lor (A \land C)$\\
+    %
+    We start by assuming $A \land (B \lor C)$. We need to
+    show $(A \land B) \lor (A \land C)$.
+    %
+    From our assumption we get $A$ and $B \lor C$. We proceed by
+    cases over $B \lor C$:
+    \begin{enumerate}
+    \item If $B$ holds then we can show that $A \land B$ holds
+      since both $A$ and $B$ hold.
+    \item If $C$ holds then we can show that $A \land C$ holds
+      since both $A$ and $C$ hold.
+    \end{enumerate}
+
+  \item[\textbf{Case 2:}]
+    $(A \land B) \lor (A \land C) \implies A \land (B \lor C)$\\
+    %
+    We start by assuming $(A \land B) \lor (A \land C)$. We need
+    to show $A \land (B \lor C)$. We proceed by cases over
+    $(A \land B) \lor (A \land C)$:
+    \begin{enumerate}
+    \item If $(A \land B)$ holds, then $A$ and $B$ hold. Now $A$
+      holds by assumption and from $B$ we can show $B \lor C$.
+    \item If $(A \land C)$ holds, then $A$ and $C$ hold. Now $A$
+      holds by assumption and from $C$ we can show $B \lor C$.
+    \end{enumerate}
+  \end{itemize}
+
+\end{enumerate}
 
 \end{document}
-
-\subsection{Formalising Mathematical Statements}
-
-\subsection{Writing Formal Proofs}
 
 \TODO{Put actual solutions here for now}

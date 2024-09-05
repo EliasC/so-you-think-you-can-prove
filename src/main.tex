@@ -26,7 +26,7 @@ $\square$\end{quote}}
 \title[You can Prove it!]{You can Prove it!\\
 {\large A Practical Tutorial in Writing Proofs}}
 
-\author{Elias Castegren}
+\author{Elias Castegren \& Ellen Arvidsson}
 
 \synctex=1
 
@@ -36,6 +36,8 @@ $\square$\end{quote}}
 \marginnote{This document was developed for the course Semantics
   of Programming Languages at Uppsala University. Please send any
   feedback to \texttt{elias.castegren@it.uu.se}. }
+
+\tableofcontents
 
 \section{Motivation}
 
@@ -53,13 +55,17 @@ reasoning from definitions and axioms\footnote{``Let natural
   definition of $2$ and $1$, we have $2 + 1 = (S~(S~0)) + (S~0)$.
   By the definition of $+$, we have
   $(S~(S~0)) + (S~0) = S~((S~0) + (S~0)) = S~(S~(0 + (S~0))) =
-  S~(S~(S~0)) = 3$ (by the definition of $3$)}.
+  S~(S~(S~0)) = 3$ (by the definition of $3$). \vspace{5mm}}, and anything
+in between.
 %
 How formal you should be depends on the context and who you are
 trying to convince; if you are reasoning with a friend or yourself
 you can probably be quite informal, but if you are designing a
-railway scheduling system being very formal can be a way of being
-very sure that two trains never meet on the same track.
+railway scheduling system being very formal, so formal that the
+proof can be checked by a computer\footnote{There is special kind of software called \emph{proof assistants}
+  which checks every step you make in a proof, ensuring that you
+  only take correct steps.}, can be a way of being very sure that
+two trains never meet on the same track.
 %
 In this document we try to be pragmatic. We will write out and
 motivate each step of a proof, but not require reasoning from
@@ -74,6 +80,10 @@ is quite mechanical, but learning how to operate the machinery
 requires practice. The second goal is therefore to provide you
 with a set of practical tools that you can use when doing your own
 proofs.
+%
+If you are taking the course Semantics of Programming Languages,
+this document also sets the expectations of the level of formality
+in seminars and assignments.
 
 The rest of this tutorial has two main sections.
 %
@@ -343,10 +353,7 @@ This is varies depending on how formal you want to be in your
 proof. In the end, the point of a proof is convincing someone that
 a proposition holds. Sometimes the right level of formality is
 just using natural language, and sometimes the right level is to
-derive every step from logical axioms\footnote{There is special
-  kind of software called \emph{proof assistants} which checks
-  every step you make in a proof, ensuring that you only take
-  correct steps.}.
+derive every step from logical axioms.
 %
 Here, we will take a middle route where we write all propositions
 formally, but write our reasoning using natural language.
@@ -502,7 +509,7 @@ and $B$. We can do this by splitting our proof into two
 sub-proofs, just as we did for the equivalence proof above.
 %
 If our goal is a disjunction $A \lor B$, we need to show either
-$A$ or $B$.
+$A$ or $B$ but it is enough to show one of them.
 
 \paragraph{As an Assumption}
 If we have a conjunction $A \land B$ as an assumption, we get to
@@ -617,7 +624,10 @@ Some kinds of values can only take on a finite number of forms.
 This allows us to do proofs by enumeration. For example, if we
 wanted to show that $A \implies A \lor B$ we can just write out
 the truth table for all possible values of $A$ and $B$ and see
-that the result is always true:
+that the result is always true\footnote{In propositional logic,
+  the \emph{theorem of completeness} states that if all
+  enumerations of truth values result in a proposition being true,
+  then there is also a proof of that proposition.}:
 
 \begin{tabular}{ccc}
   $A$&$B$&$A \implies A \lor B$\\
@@ -697,10 +707,10 @@ listed as ``need to show'' at the start.
 
 You have probably seen induction proofs used for natural numbers
 before, but the technique generalises to anything that has an
-\emph{inductive structure}, for example trees, lists, programs,
-\emph{etc}. %\footnote{\RED{See the bonus section} below for an
-%  explanation of inductive structures. Here we will only cover the
-%  mechanics of it.}.
+\emph{inductive structure}, that is anything defined in terms of
+smaller versions of itself. This includes trees, lists, programs,
+\emph{etc}.
+%
 For example, recall the definition of lists from
 Example~\ref{ex:filter}:
 \[
@@ -834,11 +844,14 @@ known as a proof by contradiction.
 
 A proof by contradiction of some property $P$ starts out by
 assuming $\lnot P$, i.e. that $P$ does not hold, and then tries to
-derive a contradiction, i.e. an assumption that is false. It is
-not always obvious when a proof by contradiction is the right
-choice of method, but it is something that is useful to have in
-one's tool box. Personally, I reach for it when something involves
-infinity.
+derive a contradiction, i.e. an assumption that is false. If we
+can derive a contradiction, our assumption of $\lnot P$ must have
+been wrong, thus it \emph{must} be the case that $P$ holds.
+%
+It is not always obvious when a proof by contradiction is the
+right choice of method, but it is something that is useful to have
+in one's tool box. Personally, I reach for it when something
+involves infinity.
 
 \begin{example}
   A classic proof by contradiction is showing that there is an

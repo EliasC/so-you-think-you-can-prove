@@ -661,7 +661,7 @@ The assumption that $P$ holds for some $k$ in the inductive case
 is known as the \emph{induction hypothesis}.
 
 \begin{example}\label{ex:distr}
-  Show that multiplication distributes over addition:
+  Show that multiplication distributes over addition for natural numbers:
   $\forall n,a,b.~n\cdot(a+b) = n\cdot a + n\cdot b$.
 
   \textbf{Proof}\\
@@ -892,7 +892,7 @@ involves infinity.
   \land C)$. You could do this by building a truth table, but try
   to do it using a step-by-step proof.
 \item Use induction to show that
-  $(a + b)(c + d) = ab + ad + bc + bd$ for any $a$, $b$, $c$ and
+  $(a + b)(c + d) = ac + ad + bc + bd$ for any natural numbers $a$, $b$, $c$ and
   $d$\footnote{\textbf{Hint}: You may want to use the property
     that we proved in Example~\ref{ex:distr} as part of your
     proof.}.
@@ -908,7 +908,7 @@ involves infinity.
   \[
   \mathit{concat}(l_1, l_2) =
   \begin{cases}
-    l_2 & \text{if } l = \epsilon\\
+    l_2 & \text{if } l_1 = \epsilon\\
     x; \mathit{concat}(l_1', l_2) & \text{if } l_1 = x; l_1'\\
   \end{cases}
   \]

@@ -3,6 +3,7 @@
 \usepackage{lmodern}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage[hyphens]{xurl}
 
 \newcounter{example}
 \newcounter{exc:first:proof}
@@ -55,16 +56,16 @@ reasoning from definitions and axioms\footnote{``Let natural
   definition of $2$ and $1$, we have $2 + 1 = (S~(S~0)) + (S~0)$.
   By the definition of $+$, we have
   $(S~(S~0)) + (S~0) = S~((S~0) + (S~0)) = S~(S~(0 + (S~0))) =
-  S~(S~(S~0)) = 3$ (by the definition of $3$). \vspace{5mm}}, and anything
+  S~(S~(S~0)) = 3$ (by the definition of $3$)''. \vspace{5mm}\label{footnote:plus}}, and anything
 in between.
 %
 How formal you should be depends on the context and who you are
 trying to convince; if you are reasoning with a friend or yourself
 you can probably be quite informal, but if you are designing a
 railway scheduling system being very formal, so formal that the
-proof can be checked by a computer\footnote{There is special kind of software called \emph{proof assistants}
+proof can be checked by a computer,\footnote{There is special kind of software called \emph{proof assistants}
   which checks every step you make in a proof, ensuring that you
-  only take correct steps.}, can be a way of being very sure that
+  only take correct steps.} can be a way of being very sure that
 two trains never meet on the same track.
 %
 In this document we try to be pragmatic. We will write out and
@@ -117,10 +118,10 @@ One of the points of this is to get rid of the ambiguity that is
 prevalent in natural languages, for example in how we use
 conjunctions like ``or'' when we speak. If you are asking someone
 if they would like tea or coffee, you are implicitly expecting
-them to pick one of them, and not both\footnote{While it is
+them to pick one of them, and not both.\footnote{While it is
   logically correct to answer ``yes'' to the question ``Would you
-  like tea or coffee'', it is also quite obnoxious. Don't be that
-  person. }. As you know, in logic there is a distinction between
+  like tea or coffee?'', it is also quite obnoxious. Don't be that
+  person. } As you know, in logic there is a distinction between
 ``inclusive or'' and ``exclusive or'', each with their own
 (clearly defined) semantics.
 
@@ -133,10 +134,10 @@ statement to begin with, but most times you will not be so lucky.
 
 When dealing with proofs, we typically call a statement that can
 be true or false (but not both) a
-\emph{proposition}\footnote{Often we will use ``derivable''
+\emph{proposition}.\footnote{Often we will use ``derivable''
   instead of ``true'', since we might be looking at what we can
   derive with a given set of rules rather than be concerned with
-  the philosophical concept of truth. }. Here are three examples
+  the philosophical concept of truth. } Here are three examples
 of propositions:
 \begin{itemize}
 \item ``Three is less than two''
@@ -184,9 +185,9 @@ gotten rid of some ambiguity from the informal statements.
 %
 For example, when we say that ``Bananas are yellow'', do we mean
 that \emph{all} bananas are yellow or that \emph{there are}
-bananas which are yellow\footnote{This distinction turns out to be
+bananas which are yellow.\footnote{This distinction turns out to be
   important: only the latter interpretation is true since there
-  are bananas which are red!}. When formalising the proposition,
+  are bananas which are red!} When formalising the proposition,
 we get rid of this ambiguity:
 
 \begin{itemize}
@@ -198,8 +199,8 @@ we get rid of this ambiguity:
 Note also that have not \emph{defined} how to identify a banana or
 that an object is yellow, which may or may not be important for
 what you want to do with these predicates. The important step for
-now is that we have put a name on these properties\footnote{There
-  is a \emph{symbolic representation} of the properties}.
+now is that we have put a name on these properties.\footnote{There
+  is a \emph{symbolic representation} of the properties}
 
 Another thing to note is that we used (for example) the symbols
 $<$, $2$ and $3$ without introducing them. This is because they
@@ -212,12 +213,12 @@ takes two or more arguments is often called a \emph{relation}.
   There is a Swedish children's song (to the tune of ``Oh
   Tannenbaum'') called ``En busschauff\"{o}r'' whose lyrics let us
   know that ``A bus driver is a man with a happy
-  mood''\footnote{Swedish children learn the logical concept of
+  mood''.\footnote{Swedish children learn the logical concept of
     the \emph{contrapositive} from an early age. The song
     continues to state that ``if he does not have a happy mood,
     then he is no bus driver'':
     $\forall p. \lnot \mathit{happy}(p) \implies \lnot
-    \mathit{busDriver}(p)$}. In order to formalise this
+    \mathit{busDriver}(p)$} In order to formalise this
   proposition, we start by introducing three predicates:
   \begin{itemize}
   \item $\mathit{busDriver}(p)$ -- $p$ is a bus driver
@@ -250,10 +251,10 @@ drivers.
   predicate $P$, such that elements that do not satisfy $P$ are
   discarded. One important property of filtering is that if an
   element for which $P$ holds is in a list, this element will also
-  be in the list if it is filtered with $P$\footnote{This is a
+  be in the list if it is filtered with $P$.\footnote{This is a
     property we want, but it is not enough. Try to think about a
     definition of filtering that is wrong but which still
-    satisfies this property. }.
+    satisfies this property. }
 
   If we assume the existence of a $\mathit{filter}$ operation and
   a relation $\mathit{member}$ that holds if a given integer is in
@@ -269,9 +270,9 @@ drivers.
   the proof will be given in a later section).
 
   We start by defining the syntax of lists, keeping the elements
-  abstract\footnote{We could for example declare some set of
+  abstract.\footnote{We could for example declare some set of
     possible list elements $\mathbb{E}$ and say that $x$ is some
-    element of that set: $x \in \mathbb{E}$.}. We write this in
+    element of that set: $x \in \mathbb{E}$.} We write this in
   Backus-Naur form, use $\epsilon$ to mean ``the empty list'' and
   separate elements of the list with semicolons:
 
@@ -281,9 +282,10 @@ drivers.
 
   \noindent
   We then continue to define the operation $\mathit{filter}$ which
-  produces a filtered list given some predicate $P$:
+  produces a filtered list given some predicate $P$. We write this
+  as a function over $\mathit{list}$ as defined above:
 
-  $\mathit{filter(l, P)} =
+  $\mathit{filter}(l, P) =
   \begin{cases}
     \epsilon & \text{if } l = \epsilon\\
     x; \mathit{filter}(l', P) & \text{if } l = x; l' \text{ and } P(x) \text{ holds}\\
@@ -291,6 +293,23 @@ drivers.
   \end{cases}$
 
   \noindent
+  What this is saying is that whenever we have a term
+  $\mathit{filter}(l, P)$ we can replace it by (since it is equal
+  to) whatever line on the right-hand side for which the
+  side-conditions hold.\footnote{We defined addition of natural
+    numbers as a function in footnote~\ref{footnote:plus}. We
+    could write it equivalently using side-conditions as
+    follows:\\\medskip
+
+    \[
+      n + m =
+      \begin{cases}
+        m & \text{if } n = 0\\
+        S~(n' + m) & \text{if } n = S~n'
+      \end{cases}
+    \]
+  }
+
   Finally, we define the derivation rules for when an element is a
   member of a list; it is either the first element of the list, or
   it is a member of the rest of the list:
@@ -306,16 +325,24 @@ drivers.
 \subsection{Exercises}
 
 \begin{enumerate}
-\item\label{ex:freshclean} The Outkast song ``So Fresh, So Clean''
-  from the 2000 album Stankonia starts with the statement ``Ain't
-  nobody dope as me, I'm just so fresh, so clean''. Formalise this
-  statement, assuming this can be generalised so that any person
-  who is both fresh and clean is more dope than anyone
-  else\footnote{You can ignore the fact that this introduces a
-    contradiction if there are two people who are both fresh and
-    clean}. Start by introducing any predicates and functions you
-  might need.
+  % \item\label{ex:freshclean} The Outkast song ``So Fresh, So Clean''
+  %   from the 2000 album Stankonia starts with the statement ``Ain't
+  %   nobody dope as me, I'm just so fresh, so clean''. Formalise this
+  %   statement, assuming this can be generalised so that any person
+  %   who is both fresh and clean is more dope than anyone
+  %   else.\footnote{You can ignore the fact that this introduces a
+  %   contradiction if there are two people who are both fresh and
+  %   clean} Start by introducing any predicates and functions you
+  %   might need.
   % ∀p. fresh(p) ∧ clean(p) => ∀q. dopeness(q) < dopeness(p)
+
+\item\label{ex:tlc} The TLC song ``No Scrubs'' from the 1999 album
+  FanMail makes the following statement: ``A scrub is a guy that
+  can't get no love from me''. Formalise this statement, assuming
+  that it applies to all the members of TLC. Start by introducing
+  any predicates, sets or functions you might
+  need.\footnote{``Can't get no'' sounds like a double negative,
+    but should be interpreted as ``Can't get any''.}
 
 \item\label{ex:offside} The offside rule in soccer states that a player is in
   ``offside position'' if they are
@@ -331,13 +358,13 @@ drivers.
   For simplicity you may assume that the pitch is a
   one-dimensional line and that both the ball and the players are
   distinct points on this line. Write your proposition as an
-  equivalence, i.e. $\forall p. \mathit{offside}(p) \iff \dots$,
+  equivalence, \emph{i.e.} $\forall p. \mathit{offside}(p) \iff \dots$,
   where $\dots$ is your definition. You may want to introduce
   helper functions for getting different positions on the pitch or
-  for getting sets of players\footnote{\textbf{Hint:} Set
+  for getting sets of players.\footnote{\textbf{Hint:} Set
     comprehensions may also come in handy. For example, the set of
     all even natural numbers can be written as
-    $\{n ~|~ n \in \mathbb{N} \land n~mod~2 = 0\}$}.
+    $\{n ~|~ n \in \mathbb{N} \land n~mod~2 = 0\}$}
   % ∀p. offside(p) <=>
   %     pos(p) < goal(p)/2 ∧
   %     pos(p) < ball ∧
@@ -364,10 +391,10 @@ proof techniques: proof by induction and proof by contradiction.
 
 All proofs have a \emph{goal}, the thing you are trying to prove
 holds. You also have a set of \emph{assumptions}, things that you
-are assuming holds already\footnote{Sometimes assumptions are
+are assuming holds already.\footnote{Sometimes assumptions are
   called \emph{hypotheses}. Note that we use the same terminology
   even for things that are obviously true (like $1=1$), even
-  though it seems to imply that we might not be sure.}. Both the
+  though it seems to imply that we might not be sure.} Both the
 goal and the assumptions are propositions as seen in the previous
 section. The process of conducting a proof is using logical steps
 starting from the assumptions and hopefully arriving at the goal.
@@ -383,9 +410,9 @@ gives you tools that you can apply when writing proofs.
 
 One of the most basic logical constructs is the implication
 $A \!\!\implies\!\! B$. It states that if we know $A$, then we can also
-know $B$\footnote{An implication $A \implies B$ is like a function
+know $B$.\footnote{An implication $A \implies B$ is like a function
   whose argument is (a proof of) $A$ and whose result is (a proof
-  of) $B$.}. There are two important things to note. Firstly,
+  of) $B$.} There are two important things to note. Firstly,
 there is nothing that says that we \emph{have to} use $A$ when
 proving $B$, just that we are allowed to. Secondly, if we happen
 to know that $A$ does \emph{not} hold, this does not say anything
@@ -409,30 +436,31 @@ know $A$.
   \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $n < 5$. We need to show $n + 2 < 7$.
-  \item By adding two on both sides we get $n + 2 < 5 + 2$.
+  \item By adding two on both sides of $n < 5$ we get $n + 2 < 5 + 2$.
   \item By basic arithmetics, $5 + 2 = 7$, giving $n + 2 < 7$. $\square$
   \end{compactenum}
 \item For any $n$, show $n < 5 \implies 5 < 7$.\\
   \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $n < 5$. We need to show $5 < 7$,
-    which holds trivially\footnote{Note that we didn't need to use
+    which holds trivially.\footnote{Note that we didn't need to use
       the assumption here, but we still ``peel it off'' in order
-      to reach the right-hand side.}. $\square$
+      to reach the right-hand side.} $\square$
   \end{compactenum}
 \item Assuming $A \implies B$ and $B \implies C$, show $A \implies C$.\\
   \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $A$. We need to show $C$.
-  \item By the first assumption\footnote{With only two
+  \item By the first assumption,\footnote{With only two
       assumptions, we can get away with just referring to them as
       ``the first'' and ``the second''. For larger proofs it is a
-      good idea to give names to your different assumptions. },
+      good idea to give names to your different assumptions. }
     having $A$ gives us $B$.
   \item By the second assumption, having $B$ gives us $C$. $\square$
   \end{compactenum}
 \end{itemize}
 
+\noindent
 A special case of proofs involving implications occur when the
 left-hand side of an implication does not hold. Remember that for
 $A \implies B$ we are only asked to show $B$ \emph{if} $A$ holds.
@@ -440,16 +468,16 @@ If $A$ does not hold, we don't have to do anything; we say that
 the proposition \emph{holds vacuously}. Similarly, if one of our
 assumptions turns out to be false, we can conclude the proof,
 since we have ended up in a situation that cannot
-happen\footnote{This is known as the \emph{principle of
+happen.\footnote{This is known as the \emph{principle of
     explosion}, or by the Latin phrase \emph{Ex falso quodlibet},
-  ``from falsehood [follows] anything''.}. This also relates to
-proof by contradiction, which is covered below.
+  ``from falsehood [follows] anything''.} This also relates to
+proofs by contradiction, which is covered later.
 
 
 \subsection{Equivalence}
 
 An equivalence $A \iff B$ says that $A$ is true if \emph{and only
-  if} $B$ is true. It is equivalent (no pun intended) to having
+  if} $B$ is true. It is equivalent (pun intended) to having
 two implications, $A \implies B$ and $B \implies A$.
 
 \paragraph{In the Goal}
@@ -460,8 +488,8 @@ both $A \implies B$ and $B \implies A$.
 \paragraph{As an Assumption}
 If we have an equivalence $A \iff B$ as an assumption, we may use
 this assumption to show $B$ if we already have $A$, or to show $A$
-if we already have $B$\footnote{Again, it is as if we had two
-  assumptions, one for each direction of the equivalence}.
+if we already have $B$.\footnote{Again, it is as if we had two
+  assumptions, one for each direction of the equivalence}
 
 \paragraph{Example}
 
@@ -472,13 +500,13 @@ if we already have $B$\footnote{Again, it is as if we had two
   \item We start by showing the first direction $n < 10 \Longrightarrow n^2 < 100$:
     \begin{compactenum}
     \item We start by assuming $n < 10$. We need to show $n^2 < 100$.
-    \item By squaring both sides, we get $n^2 < 10^2$.
+    \item By squaring both sides of $n < 10$, we get $n^2 < 10^2$.
     \item By basic arithmetics, $10^2 = 100$, giving $n^2 < 100$.
     \end{compactenum}
   \item Next we show the second direction $n^2 < 100 \implies n < 10$:
     \begin{compactenum}
     \item We start by assuming $n^2 < 100$. We need to show $n < 10$.
-    \item By taking the square root of both sides, we get $\sqrt{n^2} < \sqrt{100}$.
+    \item By taking the square root of both sides of $n^2 < 100$, we get $\sqrt{n^2} < \sqrt{100}$.
     \item By basic algebra, $\sqrt{n^2} = n$,
     \item By basic arithmetics, $\sqrt{100} = 10$, giving $n < 10$.
     \end{compactenum}
@@ -496,7 +524,7 @@ if we already have $B$\footnote{Again, it is as if we had two
   connective that you are likely to come across is negation
   $\lnot A$.}
 
-Conjunctions (written $\land$) and disjunctions ($\lor$) are the
+Conjunction (written $\land$) and disjunction ($\lor$) are the
 fancy names of logical \emph{and} and logical \emph{or}.
 %
 A conjunction $A \land B$ is true if both $A$ and $B$ are true.
@@ -516,15 +544,15 @@ If we have a conjunction $A \land B$ as an assumption, we get to
 assume both $A$ and $B$. If we have a disjunction $A \lor B$ as an
 assumption, since either $A$ or $B$ must be true, we can split our
 proof into two sub-proofs, one where we assume only $A$ and one
-where we assume only $B$\footnote{Note that we are not assuming
+where we assume only $B$.\footnote{Note that we are not assuming
   that if $A$ is true, then $B$ is false. It is possible that they
-  are both true at the same time. }.
+  are both true at the same time. }
 
 
 \paragraph{Examples}
 
 \begin{itemize}
-\item Show commutativity of conjunction, i.e. $A \land B \implies B \land A$.\\
+\item Show commutativity of conjunction, \emph{i.e.} $A \land B \implies B \land A$.\\
   \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $A \land B$. We need to show $B \land A$
@@ -532,7 +560,7 @@ where we assume only $B$\footnote{Note that we are not assuming
   \item We can show $B \land A$ by showing $B$ and $A$ separately,
     both of which hold by assumption. $\square$
   \end{compactenum}
-\item Show commutativity of disjunction, i.e. $A \lor B \implies B \lor A$.\\
+\item Show commutativity of disjunction, \emph{i.e.} $A \lor B \implies B \lor A$.\\
   \textbf{Proof}
   \begin{compactenum}
   \item We start by assuming $A \lor B$. We need to show $B \lor A$.
@@ -555,28 +583,29 @@ introduce a name that represents a particular but unspecified
 instance of something.
 
 \paragraph{In the Goal}
-If our goal has the form $\forall x. P(x)$, where $P(x)$ can be any
-proposition mentioning $x$\footnote{Or not. There is no rule that
-  requires $x$ to be mentioned, but if it isn't mentioned there is
-  no point in the quantifier being there.}, we can assume that we
-have \emph{some} $x$ and proceed by showing that $P$ holds for
-that $x$. Note that we can pick any name for $x$ (assuming we
-update $P$ with the new name), which may be necessary if we
-already have another $x$ in scope.
+If our goal has the form $\forall x. P(x)$, where $P(x)$ can be
+any proposition mentioning $x$,\footnote{Or not. There is no rule
+  that requires $x$ to be mentioned, but if it isn't mentioned
+  there is no point in the quantifier being there.} we can assume
+that we have \emph{some} abstract value $v$ and proceed by showing
+that $P(v)$ holds. Note that we can pick any name for $v$
+(assuming we update $P$ with the new name). Often we will reuse
+the name of the quantified variable ($x$ above), but renaming may
+be necessary in order to avoid name clashes.
 %
 If our goal has the form $\exists x. P(x)$, we need to provide
-some concrete value for which $P$ holds (or derive a contradiction
-from our assumptions).
+some concrete value $v$ such that $P(v)$ holds (or derive a
+contradiction from our assumptions).
 
 \paragraph{As an Assumption}
 If we have an assumption $\forall x. P(x)$, we are allowed to
-assume that $P$ holds for \emph{any} $x$ that appears in our
-assumptions\footnote{In practice, there will almost always be some
-  kind of precondition on $x$, for example that it is natural
-  number: $\forall x\in\mathbb{N}.~P(x)$}.
+assume that $P(v)$ holds for \emph{any} concrete value
+$v$.\footnote{In practice, there will almost always be some kind of
+  precondition on $x$, for example that it is natural number:
+  $\forall x\in\mathbb{N}.~P(x)$}
 %
 If we have an assumption $\exists x. P(x)$, we are allowed to
-assume that we have some concrete instance $x$ for which $P$
+assume that we have some abstract value $v$ such that $P(v)$
 holds.
 
 \paragraph{Examples}
@@ -589,7 +618,7 @@ holds.
   \item We start by assuming that we have some natural number $n$
     such that $0 < n$. We need to show
     $\exists m\in\mathbb{N}. m < n$.
-  \item We pick $0$ as a concrete value. We need to show $0 < n$
+  \item We pick $0$ as a concrete value for $m$. We need to show $0 < n$
     which holds by assumption. $\square$
   \end{compactenum}
 
@@ -624,10 +653,10 @@ Some kinds of values can only take on a finite number of forms.
 This allows us to do proofs by enumeration. For example, if we
 wanted to show that $A \implies A \lor B$ we can just write out
 the truth table for all possible values of $A$ and $B$ and see
-that the result is always true\footnote{In propositional logic,
+that the result is always true:\footnote{In propositional logic,
   the \emph{theorem of completeness} states that if all
   enumerations of truth values result in a proposition being true,
-  then there is also a proof of that proposition.}:
+  then there is also a proof of that proposition.}
 
 \begin{tabular}{ccc}
   $A$&$B$&$A \implies A \lor B$\\
@@ -639,8 +668,8 @@ that the result is always true\footnote{In propositional logic,
 \end{tabular}
 
 However, a lot of the time the things we reason about can be
-arbitrarily large\footnote{Sometimes even infinite, but we try to
-  avoid that whenever possible since infinities are weird...}. For
+arbitrarily large.\footnote{Sometimes even infinite, but we try to
+  avoid that whenever possible since infinities are weird...} For
 example, if we want to prove something about natural numbers we
 will not be able to list all of them. The standard technique for
 dealing with this is doing a proof by induction.
@@ -653,9 +682,9 @@ assuming $P$ holds for some number $k$.
 %
 The intuition is that the base case gives us $P(0)$, and then the
 inductive case first gives us $P(1)$ (for $k = 0$), and then
-$P(2)$ (for $k = 1$), and so on up to any number\footnote{You can
+$P(2)$ (for $k = 1$), and so on up to any number.\footnote{You can
   think of an inductive proof as defining a \emph{procedure} for
-  how to prove the property for any given number.}.
+  how to prove the property for any given number.}
 %
 The assumption that $P$ holds for some $k$ in the inductive case
 is known as the \emph{induction hypothesis}.
@@ -668,19 +697,22 @@ is known as the \emph{induction hypothesis}.
   We assume that we have some natural numbers $n$, $a$ and $b$.
   We need to show $n\cdot(a+b) = n\cdot a + n\cdot b$.
   %
-  We proceed by induction over $n$\footnote{It is always important
+  We proceed by induction over $n$.\footnote{It is always important
     to state which natural number you are doing induction over as
-    there is often more than one number involved. }.
+    there is often more than one number involved. }
   \begin{itemize}
-  \item \textbf{Base Case}: $n = 0$. Need to show $0 \cdot (a + b) = 0 \cdot a + 0 \cdot b$
+  \item \textbf{Base Case}: $n = 0$ \\
+    Need to show $0 \cdot (a + b) = 0 \cdot a + 0 \cdot b$
     \begin{compactenum}
     \item By arithmetics, we have $0 \cdot (a + b) = 0$.
     \item Similarly, we have $0 = 0 \cdot a + 0 \cdot b$, thus
       $0 \cdot (a + b) = 0 \cdot a + 0 \cdot b$.
     \end{compactenum}
-  \item \textbf{Inductive Case}: $n = k + 1$. Need to show
+  \item \textbf{Inductive Case}: $n = k + 1$ \\
+    Need to show
     $(k + 1) \cdot (a + b) = (k + 1) \cdot a + (k + 1) \cdot b$\\
-    \textit{Induction Hypothesis}: $k \cdot (a + b) = k \cdot a + k \cdot b$
+    \textit{Induction Hypothesis}:
+    $k \cdot (a + b) = k \cdot a + k \cdot b$
     \begin{compactenum}
     \item By the definition of multiplication, we have
       $(k + 1) \cdot (a + b) = k \cdot (a + b) + (a + b)$.
@@ -728,22 +760,17 @@ case gives us $P(\epsilon)$, and then the inductive case gives us
 $P(x;\epsilon)$ (for any $x$ and for $\mathit{list} = \epsilon$),
 and then $P(y;x;\epsilon)$ (for any $y$ and for
 $\mathit{list} = x;\epsilon$), and so on up to a list of arbitrary
-length\footnote{The similarities become even more apparent when
+length.\footnote{The similarities become even more apparent when
   you consider Peano's definition of natural numbers $n$:
   $n ::= 0 ~|~ S~n$. A natural number is either zero, or the
-  successor of another natural number. }.
+  successor of another natural number. }
 
 \begin{example}\label{ex:filterproof}
   In Example~\ref{ex:filter} we formalised a proposition relating
-  to filtering of lists that we will now prove:
-  \[
-    \forall x, l.~P(x) ~\land~ \mathit{member}(x, l)
-    \implies
-    \mathit{member}(x, \mathit{filter}(l, P))
-  \]
-
-  For convenience we also list the definition of $\mathit{filter}$
-  and the derivation rules of $\mathit{member}$ again:
+  to filtering of lists that we will now prove.
+  %
+  For convenience we list the definition of $\mathit{filter}$ and
+  the derivation rules of $\mathit{member}$ again:
 
   $\mathit{filter(l, P)} =
   \begin{cases}
@@ -758,16 +785,25 @@ length\footnote{The similarities become even more apparent when
     \frac{~\mathit{member}(x, \mathit{list})~}{~\mathit{member}(x, y; \mathit{list})~}
   \]
 
+  The proposition we want to prove is the following:
+
+  \[
+    \forall x, l.~P(x) ~\land~ \mathit{member}(x, l)
+    \implies
+    \mathit{member}(x, \mathit{filter}(l, P))
+  \]
+
   We start by assuming we have some element $x$ and list $l$ such
-  that $P(x)$ and $\mathit{member}(x, l)$\footnote{Here we are
+  that $P(x)$ and $\mathit{member}(x, l)$.\footnote{Here we are
     introducing quantified variables $x$ and $l$, assuming the
     left-hand side of the implication and splitting the
     conjunction $P(x) ~\land~ \mathit{member}(x, l)$ in a single
-    step.}. We need to show
+    step.} We need to show
   $\mathit{member}(x, \mathit{filter}(l, P))$. We proceed by
   structural induction over $l$.
   \begin{itemize}
-  \item \textbf{Base Case}: $l = \epsilon$. Need to show $\mathit{member}(x, \mathit{filter}(\epsilon, P))$\\
+  \item \textbf{Base Case}: $l = \epsilon$ \\
+    Need to show $\mathit{member}(x, \mathit{filter}(\epsilon, P))$\\
     \textit{Assumption 1}: $\mathit{member}(x, \epsilon)$\\
     \textit{Assumption 2}: $P(x)$\\
     \begin{compactenum}
@@ -776,13 +812,16 @@ length\footnote{The similarities become even more apparent when
       since both derivation rules of $\mathit{member}$ requires a
       non-empty list. The base case thus holds vacuously.
     \end{compactenum}
-  \item \textbf{Inductive Case}: $l = y; l'$. Need to show
+  \item \textbf{Inductive Case}: $l = y; l'$ \footnote{We pick the name $y$ since $x$ is already in use in our assumptions.}\\
+    Need to show
     $\mathit{member}(x, \mathit{filter}(y; l', P))$\\
-    \textit{Induction Hypothesis}\footnote{Note that the induction
-      hypothesis turns into an implication when we have
+    \textit{Induction Hypothesis}:\footnote{Note that the
+      induction hypothesis turns into an implication when we have
       assumptions that mention the variable we are doing induction
-      over. If we didn't do this, we could prove things that are
-      not true. }:
+      over. This is because the whole thing we are trying to prove
+      is that our assumptions imply our goal. If we just used
+      $\mathit{member}(x, \mathit{filter}(l', P))$ as the
+      induction hypothesis, our proof would not be valid. }
     $\mathit{member}(x, l') \implies \mathit{member}(x,
     \mathit{filter}(l', P))$\\
     \textit{Assumption 1}: $\mathit{member}(x, y; l')$\\
@@ -791,7 +830,8 @@ length\footnote{The similarities become even more apparent when
     $\mathit{member}(x, y; l')$. We proceed by cases over
     \textit{Assumption 1}:
     \begin{itemize}
-      \item \textbf{Case 1}: $x = y$. Need to show
+      \item \textbf{Case 1}: $x = y$. \\
+        Need to show
         $\mathit{member}(x, \mathit{filter}(x; l', P))$.
         \begin{compactenum}
         \item By the definition of $\mathit{filter}$ (case 2,
@@ -802,7 +842,8 @@ length\footnote{The similarities become even more apparent when
           first derivation rule of $\mathit{member}$.
         \end{compactenum}
       \item \textbf{Case 2}: $\mathit{member}(x; l')$
-        (\textit{Assumption 3}). Need to show
+        (\textit{Assumption 3}). \\
+        Need to show
         $\mathit{member}(x, \mathit{filter}(y; l', P))$.
         \begin{compactenum}
         \item By the definition of $\mathit{filter}$ there are two
@@ -821,14 +862,15 @@ length\footnote{The similarities become even more apparent when
   \end{itemize}
 \end{example}
 
+\noindent
 Most parts of a proof by induction can be done mechanically
 without thinking. The creative parts is choosing which variable to
 do induction over and figuring out which steps to take in order to
 get to the thing you have to prove. As long as we have a clear
 structure, filling in the cases, assumptions, the induction
 hypothesis and what the current goal is should be
-automatic\footnote{That is not to say that it is not something
-  that requires practice! }.
+automatic.\footnote{That is not to say that it is not something
+  that requires practice! }
 
 
 \subsection{Proof by Contradiction}
@@ -837,48 +879,179 @@ Another way (some would say \emph{the} other way) to prove that
 something holds for all values of some infinite set (like the
 natural numbers) is to show that it cannot \emph{not} be the case.
 We typically accept that all propositions are either true or
-false\footnote{This is known as the \emph{law of excluded middle};
-  there is no truth value between true and false. }, and if we can
+false,\footnote{This is known as the \emph{law of excluded middle};
+  there is no truth value between true and false. } and if we can
 show that a proposition is not false then it must be true. This is
 known as a proof by contradiction.
 
 A proof by contradiction of some property $P$ starts out by
-assuming $\lnot P$, i.e. that $P$ does not hold, and then tries to
-derive a contradiction, i.e. an assumption that is false. If we
-can derive a contradiction, our assumption of $\lnot P$ must have
-been wrong, thus it \emph{must} be the case that $P$ holds.
+assuming $\lnot P$, \emph{i.e.} that $P$ does not hold, and then
+tries to derive a contradiction.\footnote{A contradiction is when
+  we can show that an assumption (which we have assumed is true)
+  is actually false. }
+%
+If we can derive a contradiction, our assumption of $\lnot P$ must
+have been wrong, thus it \emph{must} be the case that $P$ holds.
 %
 It is not always obvious when a proof by contradiction is the
 right choice of method, but it is something that is useful to have
-in one's tool box. Personally, I reach for it when something
-involves infinity.
+in one's tool box. % Personally, I reach for it when something
+% involves infinity.
+
+% TODO: Why two sets!?
+% \begin{example}
+%   Show that for any two finite sets of prime numbers, it is always
+%   possible to find another prime number that is not in either set.
+%   Recall that a number is prime if it is only divisible by itself
+%   and 1, and that all numbers which are not prime have factors
+%   which are prime. As a technicality, also recall that if $n$ is a
+%   factor of both $a$ and $b$, then it is also a factor of the
+%   difference of $a$ and $b$.\footnote{Assume $a$ is the larger of
+%     the two numbers $a$ and $b$. If $n$ divides $a$ and $b$, then
+%     $\frac{a}{n}$ and $\frac{b}{n}$ are integers. We can derive
+%     the equality
+%     $a - b = n\frac{a}{n} - n\frac{b}{n} = n(\frac{a}{n} -
+%     \frac{b}{n})$, which is clearly divisible by $n$.}
+
+%   Assume for contradiction that it is not possible to find a prime
+%   number that is not in one of the two sets. We can list the two
+%   sets of prime numbers as $p_1, ..., p_n$ and $q_1, ..., q_m$.
+%   \begin{itemize}
+%   \item Let $P = p_1\cdots p_n \cdot q_1\cdots q_m$ be the product
+%     of all primes in both sets and consider the number $P + 1$.
+%     Clearly, $P + 1$ is not in either set since it is bigger than
+%     all the factors of $P$.
+%   \item If $P + 1$ is a prime number, we have found a prime number
+%     that is not in either set, which contradicts our assumption
+%     that such a number does not exist.
+%   \item If $P + 1$ is not a prime number, it has some prime factor
+%     $p$ which by assumption is in one of the two sets.
+%   \item If $p$ is in one of the two sets, it is also a prime
+%     factor of $P$, meaning it is also a prime factor of
+%     $P + 1 - P = 1$. However, no prime number divides $1$, so $p$
+%     cannot be in $p_1, ..., p_n$ or $q_1, ..., q_m$. This
+%     contradicts our assumption that such a number does not exist.
+%   \end{itemize}
+% \end{example}
+
+% \noindent
+% Note that while we have showed that there must be a prime number
+% that is not in one of the two sets, we have not showed \emph{how}
+% to produce this prime number. This is typical for proofs by
+% contradiction.\footnote{We say that a proof by contradiction is
+%   not \emph{constructive}.}
 
 \begin{example}
-  A classic proof by contradiction is showing that there is an
+  Show that there exists two irrational numbers $a$ and $b$ such
+  that $a^b$ is rational:
+  \[
+    \exists a, b \notin \mathbb{Q} . a^b \in \mathbb{Q}
+  \]
+  Assume for contradiction that such a pair of irrational numbers
+  does \emph{not} exist, \emph{i.e.} that $a^b$ is always
+  irrational for irrational $a$ and $b$.
+  \begin{compactenum}
+  \item We know from a classic result that $\sqrt{2}$ is
+    irrational, so by our assumption $\sqrt{2}^{\sqrt{2}}$ is also
+    irrational.\footnote{We do not know whether
+      $\sqrt{2}^{\sqrt{2}}$ is irrational or not, but we are
+      working under the assumption that $a^b$ is always irrational
+      for irrational $a$ and $b$. It turns out that
+      $\sqrt{2}^{\sqrt{2}}$ is indeed irrational, but our proof
+      would be valid regardless. }
+  \item This should mean that
+    $\left(\sqrt{2}^{\sqrt{2}}\right)^{\sqrt{2}}$ is irrational, but
+    $\left(\sqrt{2}^{\sqrt{2}}\right)^{\sqrt{2}} =
+    \left(\sqrt{2}^{\sqrt{2} \cdot \sqrt{2}}\right) = \sqrt{2}^2 =
+    2$ which is rational! This contradicts our assumption that $a^b$
+    is always irrational for irrational $a$ and $b$.
+  \end{compactenum}
+\end{example}
+
+\noindent
+Note that while we have showed that there must exist two
+irrational numbers $a$ and $b$ such that $a^b$ is rational, we
+have not showed what these numbers are. We have only showed that
+they cannot \emph{not} exist! This is typical for proofs by
+contradiction.\footnote{We say that a proof by contradiction is
+  not \emph{constructive}.}
+
+% \begin{example}
+%   Show that for all natural numbers $n$, if $n^2 + 3$ is odd, then
+%   $n$ is even:
+%   \[
+%     \forall n. \mathit{odd}(n^2 + 3) \implies \mathit{even}(n)
+%   \]
+%   Recall that an odd number can be written as $2k + 1$ for some
+%   $k$, while an even number can be written as $2k$ for some $k$.
+%   All natural numbers are either odd or even, never both.
+
+%   We start by assuming that $\mathit{odd}(n^2 + 3)$ for some $n$.
+%   We need to show $\mathit{even}(n)$. We will prove it by assuming
+%   that $n$ is not even and derive a contradiction:
+
+%   \begin{itemize}
+%   \item If $n$ is not even, it must be odd and we have
+%     $n = 2k + 1$ for some $k$.
+%   \item By substitution, we have $n^2 + 3 = (2k + 1)^2 + 3$.
+%   \item By basic algebra, we have
+%     $(2k + 1)^2 + 3 = 4k^2 + 4k + 1 + 3 = 4k^2 + 4k + 4$.
+%   \item By factoring out $2$, we get
+%     $4k^2 + 4k + 4 = 2\cdot(2k^2 + 2k + 2)$.
+%   \item Since $n^2 + 3 = 2\cdot(2k^2 + 2k + 2)$ it must be even,
+%     but by assumption $n^2 + 3$ is odd. This is a contradiction!
+%   \item Since $n$ cannot be odd, it must be even.
+%   \end{itemize}
+% \end{example}
+
+A subtle detail is that a proof can derive a contradiction without
+being a proof
+by contradiction!\footnote{If you are on a computer, you can read a rant about it here: \\
+  \url{https://existentialtype.wordpress.com/2017/03/04/a-proof-by-contradiction-is-not-a-proof-that-derives-a-contradiction}.
+  This is also where I got the previous example from.}
+%
+For example, if you are asked to prove $\lnot P(x)$, \emph{i.e.}
+that $P(x)$ does \emph{not} hold, the way you go about it is to
+assume $P(x)$ and then show that this leads to a contradiction.
+%
+This is a direct proof of a negative proposition ($\lnot P(x)$). A
+proof by contradiction would be a proof of some positive proposition
+($P(x)$) that proceeds by showing that its negation ($\lnot P(x)$)
+does \emph{not} hold.\footnote{Don't worry if this distinction
+  does not make sense to you! It will most likely not affect you
+  in any meaningful way.}
+
+\begin{example}
+  A classic proof that derives a contradiction is showing that there is an
   infinite number of prime numbers. Recall that a number is prime
   if it is only divisible by itself and 1, and that all numbers
   which are not prime have factors which are prime. As a
   technicality, also recall that if $n$ is a factor of both $a$
   and $b$, then it is also a factor of the difference of $a$ and
-  $b$\footnote{Assume $a$ is the larger of the two numbers $a$ and
+  $b$.\footnote{Assume $a$ is the larger of the two numbers $a$ and
     $b$. If $n$ divides $a$ and $b$, then $\frac{a}{n}$ and
     $\frac{b}{n}$ are integers. We can derive the equality
     $a - b = n\frac{a}{n} - n\frac{b}{n} = n(\frac{a}{n} -
-    \frac{b}{n})$, which is clearly divisible by $n$.}.
+    \frac{b}{n})$, which is clearly divisible by $n$.}
 
-  Let us assume that there is actually a finite number of prime
-  numbers, and let us list all of them as $p_1, p_2, \dots,p_n$.
-  Let $P = p_1\cdot p_2\cdots p_n$ be the product of all primes
-  and consider the number $P + 1$. We know that $P + 1$ is not a
-  prime number (we just listed all of them!), so $P + 1$ must have
-  a prime factor $p$. Since we just listed all of the primes, $p$
-  must be one of $p_1, p_2, \dots,p_n$, meaning it is also a prime
-  factor of $P$. Since $p$ divides both $P$ and $P + 1$, it must
-  also divide $P + 1 - P = 1$. However, no prime number divides
-  $1$, so $p$ cannot be one of $p_1, p_2, \dots,p_n$. This
-  contradicts our assumption that $p_1, p_2, \dots,p_n$ contains
-  all prime numbers, therefore the prime numbers must be
-  infinitely many.
+  To show that the number of primes is infinite, \emph{i.e.} that is it not finite, we start by
+  assuming that there is a finite number of primes and list all of
+  them as $p_1, p_2, \dots,p_n$.
+  \begin{compactenum}
+  \item Let $P = p_1\cdot p_2\cdots p_n$ be the product of all
+    primes and consider the number $P + 1$. We know that $P + 1$
+    is not a prime number (we just listed all of them!), so
+    $P + 1$ must have some prime factor $p$.
+  \item Since we just listed all of the primes, $p$ must be one of
+    $p_1, p_2, \dots,p_n$, meaning it is also a prime factor of
+    $P$.
+  \item Since $p$ divides both $P$ and $P + 1$, it must also
+    divide $P + 1 - P = 1$. However, no prime number divides $1$,
+    so $p$ cannot be one of $p_1, p_2, \dots,p_n$. This
+    contradicts our assumption that $p_1, p_2, \dots,p_n$ contains
+    all prime numbers. Therefore the prime numbers must be
+    infinitely many.
+  \end{compactenum}
 \end{example}
 
 \subsection{Exercises}
@@ -891,11 +1064,10 @@ involves infinity.
   $\forall A~B~C. ~A \land (B \lor C) \iff (A \land B) \lor (A
   \land C)$. You could do this by building a truth table, but try
   to do it using a step-by-step proof.
-\item Use induction to show that
-  $(a + b)(c + d) = ac + ad + bc + bd$ for any natural numbers $a$, $b$, $c$ and
-  $d$\footnote{\textbf{Hint}: You may want to use the property
-    that we proved in Example~\ref{ex:distr} as part of your
-    proof.}.
+\item Use induction to show that $n^3 + 11n$ is divisible by $6$
+  for any natural number $n$.\footnote{\textbf{Hint}: Remember
+    that a number $n$ is divisible by $6$ if and only if there
+    exists some number $k$ such that $n = 6k$. }
 \item The length of a list can be defined as follows:
   \[
   \mathit{length}(l) =
@@ -912,12 +1084,13 @@ involves infinity.
     x; \mathit{concat}(l_1', l_2) & \text{if } l_1 = x; l_1'\\
   \end{cases}
   \]
-  Show that the length of the concatenation of two lists equals
-  the sum of their individual lengths using structural induction.
+  Use structural induction to show that the length of the
+  concatenation of two lists equals the sum of their individual
+  lengths.
 \item In Example~\ref{ex:filterproof} we showed that a filtered
   list keeps all elements that satisfy the given predicate.
   Another expected property of filtering is that a filtered list
-  only contains elements that satisfies the predicate. Formalise
+  only contains elements that satisfy the predicate. Formalise
   this statement as a proposition and prove that it holds.
 \item Show that filtering the concatenation of two lists results
   in the concatenation of the filtered versions of the individual
@@ -935,21 +1108,41 @@ Some suggested solutions are omitted before the seminar.
 \subsection{``What do you Mean by That?''}
 
 \begin{enumerate}
-\item If someone is both fresh and clean then they are more dope
-  than everyone else. We introduce predicates $\mathit{fresh}$ and
-  $\mathit{clean}$, as well as a function $\mathit{dopeness}$ that
-  takes a person $p$ to their dopeness level (unit unspecified).
+% \item If someone is both fresh and clean then they are more dope
+%   than everyone else. We introduce predicates $\mathit{fresh}$ and
+%   $\mathit{clean}$, as well as a function $\mathit{dopeness}$ that
+%   takes a person $p$ to their dopeness level (unit unspecified).
+%   We use the ``for all'' quantifier to introduce names $p$ and $q$
+%   for different people:
+%   \[
+%   \forall p.~\mathit{fresh}(p) \land \mathit{clean}(p) \implies
+%   \forall q.~\mathit{dopeness}(q) < \mathit{dopeness}(p)
+%   \]
+%   Note that having both quantifiers in the beginning would be an
+%   equivalent statement:
+%   \[
+%   \forall p.\forall q.~\mathit{fresh}(p) \land \mathit{clean}(p) \implies
+%   \mathit{dopeness}(q) < \mathit{dopeness}(p)
+%   \]
+\item All three members of TLC share the opinion that anyone who
+  is a scrub is a guy who cannot get any love from them. We
+  introduce a set $\mathit{TLC}$ of members of TLC, the predicates
+  $\mathit{guy}$ and $\mathit{scrub}$, and a function
+  $\mathit{love}$ such that $\mathit{love}(a, b)$ returns a
+  natural number representing the amount of love $a$ is willing to
+  give to $b$.
+%
   We use the ``for all'' quantifier to introduce names $p$ and $q$
   for different people:
   \[
-  \forall p.~\mathit{fresh}(p) \land \mathit{clean}(p) \implies
-  \forall q.~\mathit{dopeness}(q) < \mathit{dopeness}(p)
+    \forall p. p \in \mathit{TLC} \implies
+    (\forall q. scrub(q) \implies guy(q) \land love(p, q) = 0)
   \]
-  Note that having both quantifiers in the beginning would be an
-  equivalent statement:
+  Note that we can put both quantifiers in the beginning and turn
+  the proposition into a single implication:
   \[
-  \forall p.\forall q.~\mathit{fresh}(p) \land \mathit{clean}(p) \implies
-  \mathit{dopeness}(q) < \mathit{dopeness}(p)
+    \forall p, q. p \in \mathit{TLC} \land scrub(q) \implies
+    guy(q) \land love(p, q) = 0
   \]
 \end{enumerate}
 
@@ -995,5 +1188,3 @@ Some suggested solutions are omitted before the seminar.
 \end{enumerate}
 
 \end{document}
-
-\TODO{Put actual solutions here for now}

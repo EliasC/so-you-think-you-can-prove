@@ -1,0 +1,341 @@
+\documentclass{tufte-handout}
+
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcounter{example}
+\newcounter{exc:first:proof}
+\newenvironment{example}
+{\refstepcounter{example}\begin{quote}
+\textbf{Example \arabic{example}}}
+{
+
+$\square$\end{quote}}
+
+\newenvironment{exercise}
+{\refstepcounter{example}\begin{quote}
+\textbf{Exercise \arabic{example}}}
+{\end{quote}}
+
+\newcommand{\RED}[1]{\textcolor{red}{#1}}
+\newcommand{\TODO}[1]{\RED{TODO: #1}}
+
+\newcounter{theExerciseCounter}
+
+\title[You can Prove it!]{You can Prove it!}
+
+\author{Elias Castegren \& Ellen Arvidsson}
+
+\synctex=1
+
+\begin{document}
+
+\section{Suggested Solutions}
+
+Note that these are \emph{suggested} solutions. There may be other
+equally valid ways of writing these proofs.
+
+\subsection{``What do you Mean by That?''}
+
+\begin{enumerate}
+\item All three members of TLC share the opinion that anyone who
+  is a scrub is a guy who cannot get any love from them. We
+  introduce a set $\mathit{TLC}$ of members of TLC, the predicates
+  $\mathit{guy}$ and $\mathit{scrub}$, and a function
+  $\mathit{love}$ such that $\mathit{love}(a, b)$ returns a
+  natural number representing the amount of love $a$ is willing to
+  give to $b$.
+%
+  We use the ``for all'' quantifier to introduce names $p$ and $q$
+  for different people:
+  \[
+    \forall p. p \in \mathit{TLC} \implies
+    (\forall q. scrub(q) \implies guy(q) \land love(p, q) = 0)
+  \]
+  Note that we can put both quantifiers in the beginning and turn
+  the proposition into a single implication:
+  \[
+    \forall p, q. p \in \mathit{TLC} \land scrub(q) \implies
+    guy(q) \land love(p, q) = 0
+  \]
+\item This exercise leaves a lot open for modeling. Here are two
+  suggestions. We are assuming a pitch which is a one-dimensional
+  line with player and ball positions as distinct points on this
+  line. Let us put coordinates on the line so that we can talk
+  about relative positions.
+%
+  We will first put the center of the pitch on the $0$ coordinate,
+  and the two goals on some coordinates $\mathit{goal}$ and
+  $-\mathit{goal}$. We can sketch it as follows:
+
+\begin{verbatim}
+  <---|-------------|-------------|--->
+    -goal           0            goal
+\end{verbatim}
+
+  For simplicity, let us define offside position for players
+  trying to score goals on the positive side of the
+  pitch\footnote{We can easily flip things around to get the
+    definition for the other team}. We need to capture three
+  properties for the position of some player $p$ and the ball. We
+  will imagine a function $\mathit{pos}$ defined for both players
+  and the ball:
+  \begin{enumerate}
+  \item Being in the opponents' half of the pitch
+  \item Being closer to the opponents' goal than the ball is
+  \item Being closer to the opponents' goal than the
+    second-closest opponent
+  \end{enumerate}
+  The first property can be simply $\mathit{pos}(p) > 0$.
+%
+  The second property is also quite straightforward:
+  $\mathit{pos}(p) > \mathit{pos}(\mathit{ball})$.
+%
+  The third property requires some more thought. For example, we
+  could define the set of opposing players in front of player $p$
+  and use the size of that set to check if there are fewer than
+  two opponents in front. If we let $\mathit{opponents}(p)$ be the
+  set of players on the opposing team, we can filter the players
+  in front with the following set comprehension:
+  $\{q~|~q\in\mathit{opponents}(p) ~\land~ pos(p)<pos(q)\}$. In
+  the end we get the following solution:
+\[
+  \begin{array}{l}
+    \forall p. \mathit{offside}(p) \iff\\
+    \quad \mathit{pos}(p) > 0 ~\land\\
+    \quad \mathit{pos}(p) > \mathit{pos}(\mathit{ball}) ~\land\\
+    \quad \left|\{q~|~q\in\mathit{opponents}(p) ~\land~ pos(p)<pos(q)\}\right| < 2
+  \end{array}
+\]
+
+A different choice is to let $0$ be the coordinate of one of the
+goals and $\mathit{goal}$ be the coordinate of the other. This
+puts the center of the pitch at $\frac{\mathit{goal}}{2}$:
+
+\begin{verbatim}
+  <---|-------------|-------------|--->
+      0           goal/2         goal
+\end{verbatim}
+
+
+Note that this is \emph{one} way of defining offside position.
+Another choice of model may lead to another definition. In the
+end, your definitions and level of abstraction depends on what you
+want to do with the formalisation in the end.
+\end{enumerate}
+
+\subsection{``Oh Yeah? Prove it!''}
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item We want to show
+  $\forall A~B~C. ~A \land (B \lor C) \iff (A \land B) \lor (A
+  \land C)$. We start by assuming we have some propositions $A$,
+  $B$ and $C$ and proceed to show
+  $A \land (B \lor C) \iff (A \land B) \lor (A \land C)$. We
+  proceed by cases over the two directions:
+  \begin{itemize}
+  \item[\textbf{Case 1:}] $A \land (B \lor C) \implies (A \land B) \lor (A \land C)$\\
+    %
+    We start by assuming $A \land (B \lor C)$. We need to
+    show $(A \land B) \lor (A \land C)$.
+    %
+    From our assumption we get $A$ and $B \lor C$. We proceed by
+    cases over $B \lor C$:
+    \begin{enumerate}
+    \item If $B$ holds then we can show that $A \land B$ holds
+      since both $A$ and $B$ hold.
+    \item If $C$ holds then we can show that $A \land C$ holds
+      since both $A$ and $C$ hold.
+    \end{enumerate}
+
+  \item[\textbf{Case 2:}]
+    $(A \land B) \lor (A \land C) \implies A \land (B \lor C)$\\
+    %
+    We start by assuming $(A \land B) \lor (A \land C)$. We need
+    to show $A \land (B \lor C)$. We proceed by cases over
+    $(A \land B) \lor (A \land C)$:
+    \begin{enumerate}
+    \item If $(A \land B)$ holds, then $A$ and $B$ hold. Now $A$
+      holds by assumption and from $B$ we can show $B \lor C$.
+    \item If $(A \land C)$ holds, then $A$ and $C$ hold. Now $A$
+      holds by assumption and from $C$ we can show $B \lor C$.
+    \end{enumerate}
+    $\square$
+  \end{itemize}
+
+\item We want to show that $n^3 + 11n$ is divisible by $6$ for any
+  natural number $n$.
+
+  \textbf{Proof}\\
+  The proof is by induction over $n$:
+  \begin{itemize}
+  \item \textbf{Base Case}: $n = 0$. Need to show that
+    $0^3 + 11\cdot 0$ is divisible by $6$.
+    \begin{compactenum}
+    \item By arithmetics, we have $0^3 + 11\cdot 0 = 0$, which is
+      divisible by $6$ ($0 = 6\cdot 0$).
+    \end{compactenum}
+  \item \textbf{Inductive Case}: $n = k + 1$. Need to show that
+    $(k + 1)^3 + 11(k + 1)$ is divisible by $6$.\\
+    \textit{Induction Hypothesis}: $k^3 + 11k$ is divisible by $6$.
+    \begin{compactenum}
+    \item By algebra, we have
+      $(k + 1)^3 + 11(k + 1) = k^3 + 3k^2 + 3k + 1 + 11k + 11 =
+      k^3 + 3k^2 + 14k + 12$.
+    \item By the induction hypothesis there exists some $k'$ such
+      that $k = 6k'$. Thus we have
+      $k^3 + 3k^2 + 14k + 12 = (6k')^3 + 3(6k')^2 + 14(6k') + 12$.
+    \item By algebra, we have
+      $(6k')^3 + 3(6k')^2 + 14(6k') + 12 =
+       6(6^2k'^3) + 6(3\cdot 6k'^2) + 6(14k') + 6\cdot 2 =
+       6(6^2k'^3 + 3\cdot 6k'^2 + 14k' + 2)
+      $, which is divisible by $6$.
+    \end{compactenum}
+    $\square$
+  \end{itemize}
+
+\item To avoid having to flip between the documents, here is the
+  BNF grammar for lists and the definitions of $\mathit{length}$
+  and $\mathit{concat}$
+  \[
+    l ::= \epsilon ~|~ x;l
+  \]
+  \[
+  \mathit{length}(l) =
+  \begin{cases}
+    0 & \text{if } l = \epsilon\\
+    1 + \mathit{length}(l')& \text{if } l = x; l'\\
+  \end{cases}
+  \]
+  \[
+  \mathit{concat}(l_1, l_2) =
+  \begin{cases}
+    l_2 & \text{if } l_1 = \epsilon\\
+    x; \mathit{concat}(l_1', l_2) & \text{if } l_1 = x; l_1'\\
+  \end{cases}
+  \]
+  We want to show that the length of the concatenation of two
+  lists equals the sum of their individual lengths, or formally:
+  \[
+    \forall l_1,l_2. length(concat(l_1, l_2)) = length(l_1) + length(l_2)
+  \]
+  We start by assuming that we have some $l_1$ and $l_2$ and
+  proceed to show
+  $length(concat(l_1, l_2)) = length(l_1) + length(l_2)$ by
+  induction on $l_1$:
+  \begin{itemize}
+  \item \textbf{Base Case}: $l_1 = \epsilon$. Need to show $\mathit{length}(\mathit{concat}(\epsilon, l_2)) = \mathit{length}(\epsilon) + \mathit{length}(l_2)$
+    \begin{compactenum}
+    \item By the definition of $\mathit{concat}$, we have $concat(\epsilon, l_2) = l_2$, and thus
+      $\mathit{length}(\mathit{concat}(\epsilon, l_2)) = \mathit{length}(l_2)$.
+    \item Since $\mathit{length}(\epsilon) = 0$, we have
+      $\mathit{length}(\mathit{concat}(\epsilon, l_2)) =
+      \mathit{length}(l_2) = \mathit{length}(\epsilon) +
+      \mathit{length}(l_2)$.
+    \end{compactenum}
+  \item \textbf{Inductive Case}: $l_1 = x; l_1'$. Need to show
+    $\mathit{length}(\mathit{concat}(x;l_1', l_2)) = \mathit{length}(x;l_1') + \mathit{length}(l_2)$\\
+    \textit{Induction Hypothesis}: $\mathit{length}(\mathit{concat}(l_1', l_2)) = \mathit{length}(l_1') + \mathit{length}(l_2)$
+    \begin{compactenum}
+    \item By the definition of $\mathit{concat}$, we have
+      we have $\mathit{concat}(x;l_1', l_2) = x;\mathit{concat}(l_1', l_2)$
+      and thus $\mathit{length}(\mathit{concat}(x;l_1', l_2)) = \mathit{length}(x;\mathit{concat}(l_1', l_2))$.
+    \item By the definition of $\mathit{length}$ we have $\mathit{length}(x;\mathit{concat}(l_1', l_2)) = 1 + \mathit{length}(\mathit{concat}(l_1', l_2))$.
+    \item By the induction hypothesis we have
+      $\mathit{length}(\mathit{concat}(l_1', l_2)) =
+      \mathit{length}(l_1') + \mathit{length}(l_2)$.
+    \item By the definition of $\mathit{length}$ we have $\mathit{length}(x;l_1') = 1 + \mathit{length}(l_1)$.
+    \item Together, we have $\mathit{length}(\mathit{concat}(x;l_1', l_2)) = 1 + \mathit{length}(l_1') + \mathit{length}(l_2) = \mathit{length}(x;l_1') + \mathit{length}(l_2)$.
+    \end{compactenum}
+    $\square$
+  \end{itemize}
+
+\item We start by formalising that a filtered list only contains
+  elements that satisfies the predicate:
+  \[
+    \forall x, l. \mathit{member}(x, \mathit{filter}(l, P)) \implies P(x)
+  \]
+
+  In order to prove this we start by assuming that we have some
+  $x$ and $l$ such that
+  $\mathit{member}(x, \mathit{filter}(l, P))$. We show $P(x)$ by
+  induction over $l$:
+  \begin{itemize}
+  \item \textbf{Base Case}: $l = \epsilon$. Need to show $P(x)$
+    \begin{compactenum}
+    \item By assumption, we have
+      $\mathit{member}(x, \mathit{filter}(\epsilon, P))$, but
+      $\mathit{filter}(\epsilon, P) = \epsilon$ so we have
+      $\mathit{member}(x, \epsilon)$. None of the derivation rules
+      for $\mathit{member}$ allows an empty, list so we have a
+      contradiction. The case holds vacuously.
+    \end{compactenum}
+  \item \textbf{Inductive Case}: $l = y; l'$. Need to show $P(x)$\\
+    \textit{Induction Hypothesis}: $\mathit{member}(x, \mathit{filter}(l', P)) \implies P(x)$
+    \begin{compactenum}
+    \item There are two cases of $\mathit{filter}$ to consider.
+      \begin{compactenum}
+      \item If $P(y)$ holds, then $\mathit{filter}(y;l', P) = y';\mathit{filter}(l', P)$.
+        By inversion of our assumption $\mathit{member}(x, y';\mathit{filter}(l, P))$
+        we have either $x = y$, in which case $P(x)$ holds by the assumption in this case,
+        or we have $\mathit{member}(x, \mathit{filter}(l', P))$, in which case $P(x)$ holds
+        by the induction hypothesis.
+      \item If $P(y)$ does not hold, then $\mathit{filter}(y;l', P) = \mathit{filter}(l', P)$,
+        and $P(x)$ holds by the induction hypothesis with our assumption $\mathit{member}(x, \mathit{filter}(l', P))$.
+      \end{compactenum}
+    \end{compactenum}
+    $\square$
+  \end{itemize}
+
+\item We want to show
+  \[
+    \forall l_1, l_2. \mathit{filter}(\mathit{concat}(l_1, l_2), P) = \mathit{concat}(\mathit{filter}(l_1, P), \mathit{filter}(l_2, P))
+  \]
+  We assume that we have some lists $l_1$ and $l_2$ and proceed by
+  induction over $l_1$:
+  \begin{itemize}
+  \item \textbf{Base Case}: $l_1 = \epsilon$. Need to show $\mathit{filter}(\mathit{concat}(\epsilon, l_2), P) = \mathit{concat}(\mathit{filter}(\epsilon, P), \mathit{filter}(l_2, P))$
+    \begin{compactenum}
+    \item By the definition of $\mathit{concat}$, we have $concat(\epsilon, l_2) = l_2$, and thus
+      $\mathit{filter}(\mathit{concat}(\epsilon, l_2), P) = \mathit{filter}(l_2, P)$.
+    \item By the definition of $\mathit{filter}$, we have
+      $\mathit{filter}(\epsilon, P)) = \epsilon$, and thus
+      $\mathit{concat}(\mathit{filter}(\epsilon, P), \mathit{filter}(l_2, P)) =
+      \mathit{concat}(\epsilon, \mathit{filter}(l_2, P))$
+    \item By the definition of $\mathit{concat}$, we have
+      $\mathit{concat}(\epsilon, \mathit{filter}(l_2, P)) =
+      \mathit{filter}(l_2, P)$.
+    \item Together, we have $\mathit{filter}(\mathit{concat}(\epsilon, l_2), P) = \mathit{filter}(l_2, P) = \mathit{concat}(\mathit{filter}(\epsilon, P), \mathit{filter}(l_2), P)$.
+    \end{compactenum}
+  \item \textbf{Inductive Case}: $l_1 = x; l_1'$. Need to show
+    $\mathit{filter}(\mathit{concat}(x;l_1, l_2), P) = \mathit{concat}(\mathit{filter}(x;l_1, P), \mathit{filter}(l_2, P))$\\
+    \textit{Induction Hypothesis}: $\mathit{filter}(\mathit{concat}(l_1, l_2), P) = \mathit{concat}(\mathit{filter}(l_1, P), \mathit{filter}(l_2, P))$
+    \begin{compactenum}
+    \item By the definition of $\mathit{concat}$, we have
+      we have $\mathit{concat}(x;l_1', l_2) = x;\mathit{concat}(l_1', l_2)$
+      and thus $\mathit{filter}(\mathit{concat}(x;l_1', l_2), P) = \mathit{filter}(x; \mathit{concat}(l_1', l_2), P)$.
+    \item There are two cases of filter to consider:
+      \begin{compactenum}
+      \item If $P(x)$ holds, then $\mathit{filter}(x; \mathit{concat}(l_1', l_2), P) = x; \mathit{filter}(\mathit{concat}(l_1', l_2), P)$.
+        By the induction hypothesis we have $x; \mathit{filter}(\mathit{concat}(l_1', l_2), P) =
+        x; \mathit{concat}(\mathit{filter}(l_1, P), \mathit{filter}(l_2, P))$,
+        which by the definitions of $\mathit{concat}$ and $\mathit{filter}$ is equal to
+        $\mathit{concat}(\mathit{filter}(x;l_1, P), \mathit{filter}(l_2, P))$.
+      \item If $P(x)$ does not hold, then $\mathit{filter}(x; \mathit{concat}(l_1', l_2), P) =
+        \mathit{filter}(\mathit{concat}(l_1', l_2), P)$ which by the induction
+        hypothesis is equal to $\mathit{concat}(\mathit{filter}(l_1, P), \mathit{filter}(l_2, P))$.
+        By the definitions of $\mathit{concat}$ and $\mathit{filter}$, we have
+        $\mathit{concat}(\mathit{filter}(l_1, P), \mathit{filter}(l_2, P)) =
+         \mathit{concat}(\mathit{filter}(x;l_1, P), \mathit{filter}(l_2, P))$.
+      \end{compactenum}
+    \end{compactenum}
+    $\square$
+  \end{itemize}
+
+
+\end{enumerate}
+
+\end{document}
+    \item By the induction hypothesis we have $\mathit{filter}(x; \mathit{concat}(l_1', l_2), P) = x;\mathit{concat}(\mathit{filter}(l_1, P), \mathit{filter}(l_2), P)$.

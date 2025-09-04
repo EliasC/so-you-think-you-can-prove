@@ -59,14 +59,14 @@ equally valid ways of writing these proofs.
     \forall p, q. p \in \mathit{TLC} \land scrub(q) \implies
     guy(q) \land love(p, q) = 0
   \]
-\item This exercise leaves a lot open for modeling. Here are two
-  suggestions. We are assuming a pitch which is a one-dimensional
+\item This exercise leaves a lot open for modeling. Here is one
+  suggestion. We are assuming a pitch which is a one-dimensional
   line with player and ball positions as distinct points on this
   line. Let us put coordinates on the line so that we can talk
   about relative positions.
 %
-  We will first put the center of the pitch on the $0$ coordinate,
-  and the two goals on some coordinates $\mathit{goal}$ and
+  We will put the center of the pitch on the $0$ coordinate, and
+  the two goals on some coordinates $\mathit{goal}$ and
   $-\mathit{goal}$. We can sketch it as follows:
 
 \begin{verbatim}
@@ -109,14 +109,14 @@ equally valid ways of writing these proofs.
   \end{array}
 \]
 
-A different choice is to let $0$ be the coordinate of one of the
-goals and $\mathit{goal}$ be the coordinate of the other. This
-puts the center of the pitch at $\frac{\mathit{goal}}{2}$:
+% A different choice is to let $0$ be the coordinate of one of the
+% goals and $\mathit{goal}$ be the coordinate of the other. This
+% puts the center of the pitch at $\frac{\mathit{goal}}{2}$:
 
-\begin{verbatim}
-  <---|-------------|-------------|--->
-      0           goal/2         goal
-\end{verbatim}
+% \begin{verbatim}
+%   <---|-------------|-------------|--->
+%       0           goal/2         goal
+% \end{verbatim}
 
 
 Note that this is \emph{one} way of defining offside position.
